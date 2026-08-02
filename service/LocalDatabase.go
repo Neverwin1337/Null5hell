@@ -6,6 +6,7 @@ import (
 	"crypto/rand"
 	"database/sql"
 	"errors"
+	"fmt"
 	"os"
 	"path/filepath"
 	"time"
@@ -70,6 +71,9 @@ func loadOrCreateKey(path string) ([]byte, error) {
 	}
 	if err != nil && !errors.Is(err, os.ErrNotExist) {
 		return nil, err
+	}
+	if err == nil {
+		return nil, fmt.Errorf("key file %s must be exactly 32 bytes, got %d; refusing to overwrite", path, len(key))
 	}
 	key = make([]byte, 32)
 	if _, err := rand.Read(key); err != nil {
@@ -188,9 +192,19 @@ func (s *store) updateServer(server model.Server) error {
 	if err != nil {
 		return err
 	}
-	_, err = s.db.Exec(`UPDATE servers SET type = ?, name = ?, ip = ?, user = ?, pw = ?, comment = ?, updated_at = ? WHERE id = ?`,
+	res, err := s.db.Exec(`UPDATE servers SET type = ?, name = ?, ip = ?, user = ?, pw = ?, comment = ?, updated_at = ? WHERE id = ?`,
 		int(server.Type), server.Name, server.IP, server.User, enc, server.Comment, time.Now().Unix(), server.ID)
-	return err
+	if err != nil {
+		return err
+	}
+	n, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if n == 0 {
+		return sql.ErrNoRows
+	}
+	return nil
 }
 
 func (s *store) deleteServer(id int64) error {

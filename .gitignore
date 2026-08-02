@@ -49,3 +49,4 @@ id_ed25519.pub
 build/bin
 node_modules
 frontend/dist
+docs

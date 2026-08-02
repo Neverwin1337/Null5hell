@@ -213,3 +213,71 @@ func TestLocalStorageServiceUninitialized(t *testing.T) {
 		t.Fatal("expected error when store not initialized")
 	}
 }
+
+func TestStoreUpdateMissingID(t *testing.T) {
+	dir := t.TempDir()
+	st, err := openStoreInDir(dir)
+	if err != nil {
+		t.Fatalf("open: %v", err)
+	}
+	defer st.close()
+
+	created, err := st.createServer(newTestServer("srv1"))
+	if err != nil {
+		t.Fatalf("create: %v", err)
+	}
+	if err := st.deleteServer(created.ID); err != nil {
+		t.Fatalf("delete: %v", err)
+	}
+
+	upd := newTestServer("srv1")
+	upd.ID = created.ID
+	if err := st.updateServer(upd); !errors.Is(err, sql.ErrNoRows) {
+		t.Fatalf("expected sql.ErrNoRows on update of missing server, got %v", err)
+	}
+}
+
+func TestLocalStorageUpdateServerMissingReturnsErrNotFound(t *testing.T) {
+	svc := NewLocalStorageService()
+	dir := t.TempDir()
+	st, err := openStoreInDir(dir)
+	if err != nil {
+		t.Fatalf("open: %v", err)
+	}
+	svc.store = st
+	defer svc.close()
+
+	created, err := svc.NewServer(0, "web", "1.2.3.4", "admin", "pw", "prod")
+	if err != nil {
+		t.Fatalf("NewServer: %v", err)
+	}
+	if err := svc.DeleteServer(created.ID); err != nil {
+		t.Fatalf("DeleteServer: %v", err)
+	}
+
+	err = svc.UpdateServer(created.ID, 0, "web", "1.2.3.4", "admin", "pw", "prod")
+	if !errors.Is(err, ErrNotFound) {
+		t.Fatalf("expected ErrNotFound on update of missing server, got %v", err)
+	}
+}
+
+func TestOpenStoreMalformedKeyFileReturnsErrorAndPreserves(t *testing.T) {
+	dir := t.TempDir()
+	keyPath := filepath.Join(dir, "secret.key")
+	bad := []byte("too-short-key")
+	if err := os.WriteFile(keyPath, bad, 0o600); err != nil {
+		t.Fatalf("write key: %v", err)
+	}
+
+	if _, err := openStoreInDir(dir); err == nil {
+		t.Fatal("expected error opening store with malformed key file")
+	}
+
+	got, err := os.ReadFile(keyPath)
+	if err != nil {
+		t.Fatalf("read key: %v", err)
+	}
+	if !bytes.Equal(got, bad) {
+		t.Fatalf("key file was overwritten: got %q want %q", got, bad)
+	}
+}

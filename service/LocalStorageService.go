@@ -95,7 +95,7 @@ func (s *LocalStorageService) UpdateServer(id int64, Type int, Name, IP, User, P
 	if err != nil {
 		return err
 	}
-	return st.updateServer(model.Server{
+	err = st.updateServer(model.Server{
 		ID:      id,
 		Type:    model.AuthMethod(Type),
 		Name:    Name,
@@ -104,6 +104,10 @@ func (s *LocalStorageService) UpdateServer(id int64, Type int, Name, IP, User, P
 		PW:      PW,
 		Comment: Comment,
 	})
+	if errors.Is(err, sql.ErrNoRows) {
+		return ErrNotFound
+	}
+	return err
 }
 
 func (s *LocalStorageService) DeleteServer(id int64) error {
