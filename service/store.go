@@ -8,6 +8,9 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
+	"time"
+
+	"nullshell/model"
 
 	_ "modernc.org/sqlite"
 )
@@ -103,4 +106,95 @@ func (s *store) decryptPw(data []byte) (string, error) {
 		return "", err
 	}
 	return string(plain), nil
+}
+
+func (s *store) createServer(server model.Server) (model.Server, error) {
+	enc, err := s.encryptPw(server.PW)
+	if err != nil {
+		return model.Server{}, err
+	}
+	now := time.Now().Unix()
+	if server.CreatedAt == 0 {
+		server.CreatedAt = now
+	}
+	if server.UpdatedAt == 0 {
+		server.UpdatedAt = now
+	}
+	res, err := s.db.Exec(`INSERT INTO servers (type, name, ip, user, pw, comment, created_at, updated_at)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+		int(server.Type), server.Name, server.IP, server.User, enc, server.Comment, server.CreatedAt, server.UpdatedAt)
+	if err != nil {
+		return model.Server{}, err
+	}
+	id, err := res.LastInsertId()
+	if err != nil {
+		return model.Server{}, err
+	}
+	server.ID = id
+	server.PW = server.PW
+	return server, nil
+}
+
+func (s *store) listServers() ([]model.Server, error) {
+	rows, err := s.db.Query(`SELECT id, type, name, ip, user, pw, comment, created_at, updated_at FROM servers ORDER BY id`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	result := make([]model.Server, 0)
+	for rows.Next() {
+		var sv model.Server
+		var enc []byte
+		if err := rows.Scan(&sv.ID, &sv.Type, &sv.Name, &sv.IP, &sv.User, &enc, &sv.Comment, &sv.CreatedAt, &sv.UpdatedAt); err != nil {
+			return nil, err
+		}
+		pw, err := s.decryptPw(enc)
+		if err != nil {
+			return nil, err
+		}
+		sv.PW = pw
+		result = append(result, sv)
+	}
+	return result, rows.Err()
+}
+
+func (s *store) getServer(id int64) (model.Server, error) {
+	var sv model.Server
+	var enc []byte
+	err := s.db.QueryRow(`SELECT id, type, name, ip, user, pw, comment, created_at, updated_at FROM servers WHERE id = ?`, id).
+		Scan(&sv.ID, &sv.Type, &sv.Name, &sv.IP, &sv.User, &enc, &sv.Comment, &sv.CreatedAt, &sv.UpdatedAt)
+	if err != nil {
+		return model.Server{}, err
+	}
+	pw, err := s.decryptPw(enc)
+	if err != nil {
+		return model.Server{}, err
+	}
+	sv.PW = pw
+	return sv, nil
+}
+
+func (s *store) updateServer(server model.Server) error {
+	enc, err := s.encryptPw(server.PW)
+	if err != nil {
+		return err
+	}
+	_, err = s.db.Exec(`UPDATE servers SET type = ?, name = ?, ip = ?, user = ?, pw = ?, comment = ?, updated_at = ? WHERE id = ?`,
+		int(server.Type), server.Name, server.IP, server.User, enc, server.Comment, time.Now().Unix(), server.ID)
+	return err
+}
+
+func (s *store) deleteServer(id int64) error {
+	res, err := s.db.Exec(`DELETE FROM servers WHERE id = ?`, id)
+	if err != nil {
+		return err
+	}
+	n, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if n == 0 {
+		return sql.ErrNoRows
+	}
+	return nil
 }

@@ -2,9 +2,14 @@ package service
 
 import (
 	"bytes"
+	"database/sql"
+	"errors"
 	"os"
 	"path/filepath"
 	"testing"
+	"time"
+
+	"nullshell/model"
 )
 
 func TestEncryptDecryptRoundTrip(t *testing.T) {
@@ -68,5 +73,83 @@ func TestKeyPersistedAcrossOpen(t *testing.T) {
 	}
 	if got != "pw" {
 		t.Fatalf("reopened key mismatch: got %q", got)
+	}
+}
+
+func newTestServer(name string) model.Server {
+	return model.Server{
+		Type:      model.Password,
+		Name:      name,
+		IP:        "10.0.0.1",
+		User:      "root",
+		PW:        "pw-" + name,
+		Comment:   "comment",
+		CreatedAt: time.Now().Unix(),
+		UpdatedAt: time.Now().Unix(),
+	}
+}
+
+func TestStoreCRUD(t *testing.T) {
+	dir := t.TempDir()
+	st, err := openStoreInDir(dir)
+	if err != nil {
+		t.Fatalf("open: %v", err)
+	}
+	defer st.close()
+
+	created, err := st.createServer(newTestServer("srv1"))
+	if err != nil {
+		t.Fatalf("create: %v", err)
+	}
+	if created.ID <= 0 {
+		t.Fatalf("expected positive ID, got %d", created.ID)
+	}
+	if created.PW != "pw-srv1" {
+		t.Fatalf("created.PW should be plaintext, got %q", created.PW)
+	}
+
+	got, err := st.getServer(created.ID)
+	if err != nil {
+		t.Fatalf("get: %v", err)
+	}
+	if got.PW != "pw-srv1" {
+		t.Fatalf("decrypted PW mismatch: %q", got.PW)
+	}
+
+	list, err := st.listServers()
+	if err != nil {
+		t.Fatalf("list: %v", err)
+	}
+	if len(list) != 1 {
+		t.Fatalf("expected 1 server, got %d", len(list))
+	}
+
+	upd := got
+	upd.Name = "srv1-renamed"
+	upd.Type = model.SSHKEY
+	upd.PW = "new-secret"
+	if err := st.updateServer(upd); err != nil {
+		t.Fatalf("update: %v", err)
+	}
+	got2, _ := st.getServer(created.ID)
+	if got2.Name != "srv1-renamed" || got2.Type != model.SSHKEY || got2.PW != "new-secret" {
+		t.Fatalf("update not reflected: %+v", got2)
+	}
+
+	if err := st.deleteServer(created.ID); err != nil {
+		t.Fatalf("delete: %v", err)
+	}
+	if _, err := st.getServer(created.ID); !errors.Is(err, sql.ErrNoRows) {
+		t.Fatalf("expected ErrNoRows after delete, got %v", err)
+	}
+}
+
+func TestStoreUpdateMissing(t *testing.T) {
+	dir := t.TempDir()
+	st, _ := openStoreInDir(dir)
+	defer st.close()
+	err := st.deleteServer(999)
+	if !errors.Is(err, sql.ErrNoRows) {
+		t.Fatalf("expected sql.ErrNoRows on delete missing, got %v", err)
 	}
 }
