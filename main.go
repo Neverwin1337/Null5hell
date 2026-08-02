@@ -1,7 +1,10 @@
 package main
 
 import (
+	"context"
 	"embed"
+
+	"nullshell/service"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
@@ -14,6 +17,7 @@ var assets embed.FS
 func main() {
 	// Create an instance of the app structure
 	app := NewApp()
+	localstorageSvc := service.NewLocalStorageService()
 
 	// Create application with options
 	err := wails.Run(&options.App{
@@ -24,10 +28,13 @@ func main() {
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
+		OnStartup: func(ctx context.Context) {
+			localstorageSvc.SetCtx(ctx)
+		},
 		BackgroundColour: &options.RGBA{R: 27, G: 38, B: 54, A: 1},
-		OnStartup:        app.startup,
 		Bind: []interface{}{
 			app,
+			localstorageSvc,
 		},
 	})
 

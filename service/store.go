@@ -15,6 +15,16 @@ import (
 	_ "modernc.org/sqlite"
 )
 
+var ErrNotFound = errors.New("server not found")
+
+func dataDir() (string, error) {
+	cfg, err := os.UserConfigDir()
+	if err != nil {
+		return "", err
+	}
+	return filepath.Join(cfg, "nullshell"), nil
+}
+
 type store struct {
 	db  *sql.DB
 	key []byte
@@ -131,7 +141,6 @@ func (s *store) createServer(server model.Server) (model.Server, error) {
 		return model.Server{}, err
 	}
 	server.ID = id
-	server.PW = server.PW
 	return server, nil
 }
 

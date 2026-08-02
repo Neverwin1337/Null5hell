@@ -153,3 +153,63 @@ func TestStoreUpdateMissing(t *testing.T) {
 		t.Fatalf("expected sql.ErrNoRows on delete missing, got %v", err)
 	}
 }
+
+func TestLocalStorageServiceAPI(t *testing.T) {
+	svc := NewLocalStorageService()
+	dir := t.TempDir()
+	st, err := openStoreInDir(dir)
+	if err != nil {
+		t.Fatalf("open: %v", err)
+	}
+	svc.store = st
+	defer svc.close()
+
+	created, err := svc.NewServer(0, "web", "1.2.3.4", "admin", "hunter2", "prod")
+	if err != nil {
+		t.Fatalf("NewServer: %v", err)
+	}
+	if created.PW != "hunter2" || created.ID <= 0 {
+		t.Fatalf("unexpected created: %+v", created)
+	}
+
+	got, err := svc.GetServerByID(created.ID)
+	if err != nil {
+		t.Fatalf("GetServerByID: %v", err)
+	}
+	if got.PW != "hunter2" {
+		t.Fatalf("PW should be plaintext via API, got %q", got.PW)
+	}
+
+	list, err := svc.GetServerList()
+	if err != nil {
+		t.Fatalf("GetServerList: %v", err)
+	}
+	if len(list) != 1 {
+		t.Fatalf("expected 1, got %d", len(list))
+	}
+
+	if err := svc.UpdateServer(created.ID, 1, "web2", "1.2.3.5", "u", "new-pw", "updated"); err != nil {
+		t.Fatalf("UpdateServer: %v", err)
+	}
+	got2, _ := svc.GetServerByID(created.ID)
+	if got2.Name != "web2" || got2.PW != "new-pw" || got2.Type != model.SSHKEY {
+		t.Fatalf("update not reflected: %+v", got2)
+	}
+
+	if err := svc.DeleteServer(created.ID); err != nil {
+		t.Fatalf("DeleteServer: %v", err)
+	}
+	if _, err := svc.GetServerList(); err != nil {
+		t.Fatalf("list after delete: %v", err)
+	}
+}
+
+func TestLocalStorageServiceUninitialized(t *testing.T) {
+	svc := NewLocalStorageService()
+	if _, err := svc.GetServerList(); err == nil {
+		t.Fatal("expected error when store not initialized")
+	}
+	if err := svc.DeleteServer(1); err == nil {
+		t.Fatal("expected error when store not initialized")
+	}
+}
