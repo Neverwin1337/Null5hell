@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="NullShell.App/NullShell.App.csproj" />
+  <Project Path="NullShell.Core/NullShell.Core.csproj" />
+</Solution>

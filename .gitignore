@@ -1,0 +1,48 @@
+# ===== .NET =====
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+*.user
+*.suo
+*.userprefs
+*.pdb
+*.cache
+*.nupkg
+*.snupkg
+Project.assets.json
+*.lock.json
+
+# ===== Avalonia / VS / Rider =====
+.vs/
+.idea/
+.ionide/
+*.DotSettings.user
+.vscode/
+
+# ===== 生成文件 / 运行期数据（含敏感数据，绝不提交） =====
+artifacts/
+publish/
+*.log
+*.tmp
+
+# 运行时数据目录 —— 含主密码/凭证明文相关文件，禁止入库
+# （实际运行数据在 %AppData%/NullShell，此处仅为防御本仓库内生成文件）
+*.dat
+data/
+
+# ===== OS =====
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# ===== 密钥/证书类（防泄露，宁缺毋滥） =====
+*.pem
+*.key
+*.pfx
+*.ppk
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+*.authorized_keys
