@@ -1,23 +1,48 @@
+@import "tailwindcss";
+@import "./themes.css";
+
+@font-face {
+    font-family: "JetBrains Mono";
+    font-style: normal;
+    font-weight: 400;
+    src: local("JetBrains Mono"),
+    url("assets/fonts/jetbrains-mono-latin-400-normal.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "JetBrains Mono";
+    font-style: normal;
+    font-weight: 500;
+    src: local("JetBrains Mono"),
+    url("assets/fonts/jetbrains-mono-latin-500-normal.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "JetBrains Mono";
+    font-style: normal;
+    font-weight: 600;
+    src: local("JetBrains Mono"),
+    url("assets/fonts/jetbrains-mono-latin-600-normal.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "JetBrains Mono";
+    font-style: normal;
+    font-weight: 700;
+    src: local("JetBrains Mono"),
+    url("assets/fonts/jetbrains-mono-latin-700-normal.woff2") format("woff2");
+}
+
 html {
-    background-color: rgba(27, 38, 54, 1);
+    background-color: var(--bg);
     text-align: center;
-    color: white;
+    color: var(--fg);
 }
 
 body {
     margin: 0;
-    color: white;
-    font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
-    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-}
-
-@font-face {
-    font-family: "Nunito";
-    font-style: normal;
-    font-weight: 400;
-    src: local(""),
-    url("assets/fonts/nunito-v16-latin-regular.woff2") format("woff2");
+    color: var(--fg);
+    font-family: var(--font-body);
 }
 
 #app {

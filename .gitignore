@@ -19,7 +19,7 @@ Project.assets.json
 .ionide/
 *.DotSettings.user
 .vscode/
-
+.superpowers
 # ===== 生成文件 / 运行期数据（含敏感数据，绝不提交） =====
 artifacts/
 publish/
