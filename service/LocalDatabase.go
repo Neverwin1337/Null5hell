@@ -11,7 +11,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"nullshell/model"
+	"wails3-app/model"
 
 	_ "modernc.org/sqlite"
 )
