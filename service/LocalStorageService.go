@@ -6,11 +6,12 @@ import (
 	"errors"
 	"time"
 
-	"nullshell/model"
+	"wails3-app/model"
+
+	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
 type LocalStorageService struct {
-	ctx   context.Context
 	store *store
 }
 
@@ -18,17 +19,21 @@ func NewLocalStorageService() *LocalStorageService {
 	return &LocalStorageService{}
 }
 
-func (s *LocalStorageService) SetCtx(ctx context.Context) {
-	s.ctx = ctx
+func (s *LocalStorageService) ServiceStartup(ctx context.Context, options application.ServiceOptions) error {
 	dir, err := dataDir()
 	if err != nil {
-		return
+		return err
 	}
 	st, err := openStoreInDir(dir)
 	if err != nil {
-		return
+		return err
 	}
 	s.store = st
+	return nil
+}
+
+func (s *LocalStorageService) ServiceShutdown() error {
+	return s.close()
 }
 
 func (s *LocalStorageService) close() error {

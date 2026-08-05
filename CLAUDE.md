@@ -2,11 +2,12 @@
 
 ## Project Overview
 
-Wails v2 desktop application:
+Wails v3 desktop application (targets **macOS, Windows, and Linux desktop only** — no iOS/Android/mobile):
 - **Frontend**: Vue 3 + Vite (`frontend/`)
-- **Backend**: Go (Wails bindings in `app.go` / `main.go`; business logic in `service/` and `model/`)
+- **Backend**: Go (Wails bindings in `main.go`; business logic in `service/` and `model/`)
 - **Database**: SQLite via `modernc.org/sqlite` (pure Go, no CGO)
-- Frontend/backend communicate through generated Wails JS bindings (`frontend/wailsjs/`)
+- Frontend/backend communicate through generated Wails v3 bindings (`frontend/bindings/`)
+- Build orchestrated by Taskfile tasks, invoked via the `wails3` CLI (`wails3 build`/`wails3 task`)
 
 Existing services: SSH (`service/SshConnection.go`), Sessions (`service/Session.go`), FileManager, PsList, NetMonitor, ResMonitor, LocalDatabase, LocalStorageService.
 
@@ -39,4 +40,4 @@ Existing services: SSH (`service/SshConnection.go`), Sessions (`service/Session.
 
 ## Before Reporting Done
 
-Run verification: `go test ./...`, frontend `npm run build`, and `wails build`. Confirm the results before claiming success.
+Run verification: `go test ./...`, frontend `npm run build`, and `wails3 build`. Confirm the results before claiming success.

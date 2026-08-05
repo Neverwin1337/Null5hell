@@ -1,0 +1,1907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SSH Workbench — English Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: oklch(13% 0.014 250);
+  --surface: oklch(18% 0.016 250);
+  --surface-2: oklch(21.5% 0.018 250);
+  --surface-3: oklch(24.5% 0.02 250);
+  --fg: oklch(82% 0.018 250);
+  --muted: oklch(58% 0.02 250);
+  --border: oklch(28% 0.016 250);
+  --border-soft: oklch(23.5% 0.014 250);
+  --accent: oklch(78% 0.11 245);
+  --accent-dim: oklch(52% 0.09 245);
+  --success: oklch(74% 0.16 155);
+  --warn: oklch(80% 0.14 85);
+  --danger: oklch(66% 0.2 25);
+  --term-bg: oklch(14.5% 0.012 250);
+
+  --font-display: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-body:    'JetBrains Mono', 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-mono:    'JetBrains Mono', 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+
+  --r-lg: 16px; --r-md: 10px; --r-sm: 7px;
+
+  /* derived tokens — formulas resolve against whichever theme is active */
+  --accent-ink: oklch(17% 0.04 245);
+  --danger-ink: oklch(98% 0.01 25);
+  --accent-soft: color-mix(in oklab, var(--accent) 12%, transparent);
+  --accent-soft-strong: color-mix(in oklab, var(--accent) 24%, transparent);
+  --ring: color-mix(in oklab, var(--accent-dim) 30%, transparent);
+  --shadow-accent: color-mix(in oklab, var(--accent-dim) 60%, transparent);
+  --success-soft: color-mix(in oklab, var(--success) 12%, transparent);
+  --success-line: color-mix(in oklab, var(--success) 32%, transparent);
+  --ring-success: color-mix(in oklab, var(--success) 22%, transparent);
+  --ring-warn: color-mix(in oklab, var(--warn) 22%, transparent);
+  --ring-muted: color-mix(in oklab, var(--muted) 18%, transparent);
+  --danger-soft: color-mix(in oklab, var(--danger) 14%, transparent);
+  --sys: oklch(72% 0.11 245);
+  --shadow-color: oklch(0% 0 0 / .6);
+  --scrim: oklch(0% 0 0 / .55);
+  color-scheme: dark;
+}
+
+/* ============ themes — midnight (One Dark · blue) · ember (Monokai · orange) · paper (Catppuccin · lavender) · sand (Solarized · teal) ============ */
+html[data-theme="ember"] {
+  --bg: oklch(13% 0.02 330);
+  --surface: oklch(17.5% 0.022 330);
+  --surface-2: oklch(21% 0.024 330);
+  --surface-3: oklch(24% 0.026 330);
+  --fg: oklch(91% 0.012 330);
+  --muted: oklch(60% 0.02 330);
+  --border: oklch(29% 0.02 330);
+  --border-soft: oklch(24.5% 0.018 330);
+  --accent: oklch(79% 0.14 60);
+  --accent-dim: oklch(55% 0.12 55);
+  --success: oklch(74% 0.16 155);
+  --warn: oklch(80% 0.14 85);
+  --danger: oklch(66% 0.2 25);
+  --term-bg: oklch(12.5% 0.018 330);
+  --accent-ink: oklch(18% 0.05 55);
+  --sys: oklch(74% 0.13 60);
+  --shadow-color: oklch(0% 0 0 / .6);
+  color-scheme: dark;
+}
+html[data-theme="paper"] {
+  --bg: oklch(95% 0.005 250);
+  --surface: oklch(99.2% 0.003 250);
+  --surface-2: oklch(93.5% 0.007 250);
+  --surface-3: oklch(91% 0.009 250);
+  --fg: oklch(38% 0.02 270);
+  --muted: oklch(48% 0.02 270);
+  --border: oklch(85% 0.012 250);
+  --border-soft: oklch(89.5% 0.009 250);
+  --accent: oklch(54% 0.15 305);
+  --accent-dim: oklch(66% 0.13 305);
+  --success: oklch(45% 0.12 155);
+  --warn: oklch(58% 0.12 85);
+  --danger: oklch(52% 0.19 25);
+  --term-bg: oklch(93% 0.007 250);
+  --accent-ink: oklch(98% 0.01 305);
+  --danger-ink: oklch(99% 0.006 25);
+  --sys: oklch(48% 0.12 305);
+  --shadow-color: oklch(45% 0 0 / .16);
+  --scrim: oklch(20% 0 0 / .35);
+  color-scheme: light;
+}
+html[data-theme="sand"] {
+  --bg: oklch(96.6% 0.02 90);
+  --surface: oklch(99% 0.012 90);
+  --surface-2: oklch(94.5% 0.02 90);
+  --surface-3: oklch(92.5% 0.022 90);
+  --fg: oklch(42% 0.03 230);
+  --muted: oklch(48% 0.03 230);
+  --border: oklch(86% 0.018 90);
+  --border-soft: oklch(90% 0.016 90);
+  --accent: oklch(50% 0.09 200);
+  --accent-dim: oklch(62% 0.09 200);
+  --success: oklch(45% 0.12 155);
+  --warn: oklch(58% 0.12 85);
+  --danger: oklch(52% 0.19 25);
+  --term-bg: oklch(93% 0.02 90);
+  --accent-ink: oklch(98% 0.01 200);
+  --danger-ink: oklch(99% 0.006 25);
+  --sys: oklch(45% 0.08 200);
+  --shadow-color: oklch(45% 0 0 / .16);
+  --scrim: oklch(20% 0 0 / .35);
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 13px;
+  line-height: 1.5;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+button { font-family: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+input { font-family: inherit; }
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.btn-new:focus-visible, .btn-primary:focus-visible,
+.term-empty button.primary:focus-visible,
+.disc-overlay button:focus-visible { outline-color: var(--accent-ink); }
+.btn-danger:focus-visible { outline-color: var(--danger-ink); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 8px; border: 3px solid transparent; background-clip: content-box; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); border: 3px solid transparent; background-clip: content-box; }
+
+/* ============ desktop + window ============ */
+.desktop { padding: 12px; height: 100%; display: flex; }
+.window {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: 0 24px 60px -18px var(--shadow-color);
+  display: grid;
+  grid-template-rows: 48px 1fr 30px;
+  overflow: hidden;
+  transition: transform .32s cubic-bezier(.2,.7,.3,1), opacity .32s;
+}
+.window.minimized { transform: translateY(calc(100vh - 96px)) scale(.14); opacity: 0; pointer-events: none; }
+.window.disconnected { pointer-events: none; }
+
+/* ============ titlebar (borderless) ============ */
+.titlebar {
+  display: flex; align-items: center; gap: 14px;
+  padding: 0 14px;
+  border-bottom: 1px solid var(--border-soft);
+  -webkit-user-select: none; user-select: none;
+}
+.traffic { display: flex; gap: 8px; }
+.tl {
+  width: 12px; height: 12px; border-radius: 50%;
+  position: relative; display: grid; place-items: center;
+  transition: transform .12s;
+}
+.tl:hover { transform: scale(1.12); }
+.tl svg { opacity: 0; width: 7px; height: 7px; }
+.tl:hover svg { opacity: .85; }
+.tl-close { background: var(--danger); }
+.tl-min { background: var(--warn); }
+.app-brand { display: flex; align-items: center; gap: 8px; font-weight: 560; letter-spacing: .01em; font-size: 13px; }
+.app-brand svg { color: var(--accent); }
+.app-brand .crumb { color: var(--muted); font-weight: 400; }
+.app-brand .crumb b { color: var(--fg); font-weight: 560; }
+.titlebar-spacer { flex: 1; }
+.titlebar-actions { display: flex; gap: 6px; }
+.icon-btn {
+  width: 30px; height: 30px; border-radius: var(--r-sm);
+  display: grid; place-items: center; color: var(--muted);
+  transition: background .12s, color .12s;
+}
+.icon-btn:hover { background: var(--surface-2); color: var(--fg); }
+.icon-btn.active, .icon-btn.open { color: var(--accent); background: var(--surface-2); }
+.icon-btn svg { width: 16px; height: 16px; }
+.lang-btn {
+  height: 26px; padding: 0 10px; border-radius: 7px;
+  border: 1px solid var(--border); background: var(--surface-2);
+  color: var(--muted); font-size: 11px; font-weight: 560; letter-spacing: .04em;
+  transition: border-color .12s, color .12s;
+}
+.lang-btn:hover { border-color: var(--accent-dim); color: var(--accent); }
+
+/* ============ main grid ============ */
+.main { display: grid; grid-template-columns: 236px 1fr 276px; min-height: 0; }
+
+/* ============ sidebar ============ */
+.sidebar {
+  border-right: 1px solid var(--border-soft);
+  display: flex; flex-direction: column; min-height: 0;
+}
+.side-head { padding: 14px 14px 10px; display: flex; gap: 8px; }
+.search {
+  flex: 1; min-width: 0; display: flex; align-items: center; gap: 7px;
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: var(--r-md); padding: 0 10px; height: 32px;
+  color: var(--muted);
+  transition: border-color .12s, box-shadow .12s;
+}
+.search:focus-within { border-color: var(--accent-dim); box-shadow: 0 0 0 3px var(--ring); }
+.search svg { width: 14px; height: 14px; flex: none; }
+.search input { flex: 1; min-width: 0; background: none; border: 0; outline: 0; color: var(--fg); font-size: 12.5px; }
+.search input::placeholder { color: var(--muted); }
+.btn-add {
+  width: 32px; height: 32px; flex: none; border-radius: var(--r-md);
+  border: 1px dashed var(--border); color: var(--muted);
+  display: grid; place-items: center; transition: all .12s;
+}
+.btn-add:hover { color: var(--accent); border-color: var(--accent-dim); background: var(--accent-soft); }
+.btn-add svg { width: 15px; height: 15px; }
+
+.group-input {
+  display: flex; align-items: center; gap: 7px;
+  padding: 7px 8px; margin-bottom: 2px; border-radius: var(--r-md);
+  background: var(--surface-2); border: 1px solid var(--border);
+  transition: border-color .12s, box-shadow .12s;
+}
+.group-input:focus-within { border-color: var(--accent-dim); box-shadow: 0 0 0 3px var(--ring); }
+.group-input svg { width: 13px; height: 13px; color: var(--muted); flex: none; }
+.group-input input {
+  flex: 1; min-width: 0; background: none; border: 0; outline: 0;
+  color: var(--fg); font: inherit; font-size: 12.5px; caret-color: var(--accent);
+}
+
+.side-scroll { flex: 1; overflow-y: auto; padding: 2px 8px 10px; }
+.side-empty {
+  padding: 26px 16px; text-align: center;
+  font-size: 12px; color: var(--muted); line-height: 1.6;
+}
+.group { margin-bottom: 2px; }
+.group-h {
+  width: 100%; display: flex; align-items: center; gap: 6px;
+  padding: 6px 6px; border-radius: var(--r-sm);
+  font-size: 11px; color: var(--muted); letter-spacing: .06em;
+  text-align: left; transition: background .12s, color .12s;
+}
+.group-h:hover { background: var(--surface-2); color: var(--fg); }
+.group-h svg { width: 11px; height: 11px; transition: transform .15s; }
+.group.collapsed .group-h svg { transform: rotate(-90deg); }
+.group.collapsed .group-items { display: none; }
+.group-h .cnt { margin-left: auto; font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); }
+
+.srv {
+  width: 100%; display: flex; align-items: center; gap: 9px;
+  padding: 7px 8px; border-radius: var(--r-md); margin-bottom: 1px;
+  text-align: left; border: 1px solid transparent;
+  transition: background .12s, border-color .12s;
+}
+.srv:hover { background: var(--surface-2); }
+.srv.active { background: var(--surface-3); border-color: var(--border); }
+.srv-main { min-width: 0; flex: 1; }
+.srv-name { font-size: 12.5px; font-weight: 510; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.srv.active .srv-name { color: var(--accent); }
+.srv-ip { font-family: var(--font-mono); font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.srv-meta { display: flex; align-items: center; gap: 6px; flex: none; }
+.pill {
+  font-size: 9.5px; font-weight: 560; letter-spacing: .06em;
+  padding: 1.5px 6px; border-radius: 5px;
+}
+.pill-proto { background: var(--surface-2); color: var(--muted); font-family: var(--font-mono); letter-spacing: 0; }
+.dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.dot.online { background: var(--success); box-shadow: 0 0 0 3px var(--ring-success); }
+.dot.offline { background: var(--muted); box-shadow: 0 0 0 3px var(--ring-muted); }
+.dot.warn { background: var(--warn); box-shadow: 0 0 0 3px var(--ring-warn); }
+.srv.fav .srv-name::after { content: " ★"; color: var(--warn); font-size: 10px; }
+
+.side-foot { padding: 8px; border-top: 1px solid var(--border-soft); }
+.btn-new {
+  width: 100%; height: 34px; border-radius: var(--r-md);
+  background: var(--accent); color: var(--accent-ink);
+  font-weight: 560; font-size: 12.5px; letter-spacing: .02em;
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  box-shadow: 0 6px 18px -8px var(--shadow-accent);
+  transition: transform .1s, filter .12s;
+}
+.btn-new:hover { filter: brightness(1.06); }
+.btn-new:active { transform: translateY(1px); }
+.btn-new svg { width: 15px; height: 15px; }
+
+/* ============ terminal pane ============ */
+.terminal-pane { display: flex; flex-direction: column; min-height: 0; min-width: 0; background: var(--term-bg); }
+.tabbar {
+  display: flex; align-items: stretch; height: 40px; flex: none;
+  background: var(--surface); border-bottom: 1px solid var(--border-soft);
+  overflow-x: auto; scrollbar-width: none;
+}
+.tabbar::-webkit-scrollbar { display: none; }
+.tab {
+  display: flex; align-items: center; gap: 8px;
+  padding: 0 12px; min-width: 132px; max-width: 190px; flex: 0 0 auto;
+  border-right: 1px solid var(--border-soft);
+  color: var(--muted); font-size: 12.5px;
+  border-top: 2px solid transparent;
+  transition: background .12s, color .12s;
+}
+.tab:hover { background: var(--surface-2); }
+.tab.active { background: var(--term-bg); color: var(--fg); border-top-color: var(--accent); }
+.tab .t-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.tab .t-name { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tab.active .t-name { color: var(--accent); }
+.tab .t-close {
+  width: 17px; height: 17px; flex: none; border-radius: 5px;
+  display: grid; place-items: center; color: var(--muted); opacity: 0;
+  transition: opacity .12s, background .12s, color .12s;
+}
+.tab:hover .t-close { opacity: 1; }
+.tab .t-close:hover { background: var(--surface-3); color: var(--fg); }
+.tab .t-close svg { width: 11px; height: 11px; }
+.tab-add {
+  width: 40px; flex: none; display: grid; place-items: center;
+  color: var(--muted); border-right: 1px solid var(--border-soft);
+  transition: background .12s, color .12s;
+}
+.tab-add:hover { background: var(--surface-2); color: var(--accent); }
+.tab-add svg { width: 15px; height: 15px; }
+
+.term { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.term-scroll { flex: 1; overflow-y: auto; padding: 14px 18px 10px; font-family: var(--font-mono); font-size: 13px; line-height: 1.55; }
+.term-line { white-space: pre-wrap; word-break: break-all; min-height: 1.55em; }
+.term-line.sys { color: var(--sys); }
+.term-line.cmd { color: var(--fg); }
+.term-line.cmd .prompt-p { color: var(--accent); }
+.term-line.out { color: var(--muted); }
+.term-line.err { color: var(--warn); }
+.term-line.blank { height: .9em; min-height: 0; }
+.input-row { display: flex; align-items: center; gap: 0; }
+.input-row .prompt-p { color: var(--accent); white-space: pre; }
+.term-input {
+  flex: 1; background: none; border: 0; outline: 0;
+  color: var(--fg); font: inherit; caret-color: var(--accent);
+  padding: 0; min-width: 0;
+}
+.term-caret { display: inline-block; width: 7px; height: 15px; background: var(--accent); animation: blink 1.1s steps(2,start) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+.term-empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; color: var(--muted); }
+.term-empty svg { width: 40px; height: 40px; opacity: .5; }
+.term-empty button {
+  height: 34px; padding: 0 16px; border-radius: var(--r-md);
+  background: var(--surface-2); border: 1px solid var(--border);
+  font-size: 12.5px; color: var(--fg); transition: border-color .12s;
+}
+.term-empty button:hover { border-color: var(--accent-dim); color: var(--accent); }
+
+/* ============ inspector ============ */
+.inspector { border-left: 1px solid var(--border-soft); background: var(--surface); overflow-y: auto; }
+.ins-body { padding: 14px; display: flex; flex-direction: column; gap: 16px; }
+.ins-head { display: flex; flex-direction: column; gap: 8px; }
+.ins-title { display: flex; align-items: center; gap: 10px; }
+.ins-avatar {
+  width: 36px; height: 36px; border-radius: 12px; flex: none;
+  background: var(--surface-3); border: 1px solid var(--border);
+  display: grid; place-items: center; font-family: var(--font-mono); font-weight: 600; font-size: 13px; color: var(--accent);
+}
+.ins-name { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+.ins-ip { font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.ins-status-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.status-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--success-soft); color: var(--success);
+  border: 1px solid var(--success-line);
+  padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 560;
+}
+.status-pill .dot { width: 6px; height: 6px; box-shadow: none; }
+.lat {
+  font-family: var(--font-mono); font-size: 11px; color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.ins-actions { display: flex; gap: 8px; }
+.btn-ghost {
+  flex: 1; height: 30px; border-radius: var(--r-sm);
+  border: 1px solid var(--border); background: var(--surface-2);
+  font-size: 12px; font-weight: 510; color: var(--fg);
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  transition: border-color .12s, color .12s, background .12s;
+}
+.btn-ghost:hover { border-color: var(--accent-dim); color: var(--accent); }
+.btn-ghost svg { width: 13px; height: 13px; }
+
+.sec { display: flex; flex-direction: column; gap: 9px; }
+.sec-title { font-size: 11px; color: var(--muted); letter-spacing: .06em; font-weight: 560; display: flex; align-items: center; justify-content: space-between; }
+.sec-title .val { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0; }
+
+.meter { display: flex; flex-direction: column; gap: 4px; }
+.meter-row { display: flex; align-items: center; justify-content: space-between; font-size: 12px; }
+.meter-row .k { color: var(--muted); }
+.meter-row .v { font-family: var(--font-mono); font-size: 12px; font-variant-numeric: tabular-nums; }
+.bar { height: 5px; border-radius: 3px; background: var(--surface-2); overflow: hidden; }
+.bar i { display: block; height: 100%; border-radius: 3px; transition: width .6s cubic-bezier(.2,.7,.3,1), background .4s; }
+.bar.cpu i { background: var(--accent); }
+.bar.mem i { background: var(--warn); }
+.bar.disk i { background: var(--muted); }
+.bar.disk.high i { background: var(--danger); }
+
+.spark { display: flex; align-items: flex-end; gap: 2px; height: 30px; }
+.spark i { flex: 1; border-radius: 2px 2px 0 0; background: var(--accent); opacity: .55; min-height: 2px; }
+.spark i:last-child { opacity: 1; background: var(--accent); }
+
+.kv { display: flex; flex-direction: column; }
+.kv-row { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; border-bottom: 1px solid var(--border-soft); font-size: 12px; }
+.kv-row:last-child { border-bottom: 0; }
+.kv-row .k { color: var(--muted); flex: none; }
+.kv-row .v { font-family: var(--font-mono); font-size: 11.5px; text-align: right; font-variant-numeric: tabular-nums; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ============ statusbar ============ */
+.statusbar {
+  display: flex; align-items: center; gap: 18px;
+  padding: 0 14px; font-size: 11.5px; color: var(--muted);
+  border-top: 1px solid var(--border-soft); background: var(--surface);
+  white-space: nowrap; overflow: hidden;
+}
+.st { display: flex; align-items: center; gap: 6px; }
+.st .dot { width: 7px; height: 7px; box-shadow: none; }
+.st b { color: var(--fg); font-weight: 560; }
+.st .mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.st-sep { width: 1px; height: 14px; background: var(--border); flex: none; }
+.st-spacer { flex: 1; }
+.st-down { color: var(--success); }
+.st-up { color: var(--accent); }
+.kbd {
+  font-family: var(--font-mono); font-size: 10.5px; color: var(--muted);
+  border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 4px;
+  padding: 0 5px;
+}
+
+/* ============ toasts + modal + minimbar ============ */
+.toasts { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; gap: 8px; z-index: 60; align-items: center; }
+.toast {
+  background: var(--surface-3); border: 1px solid var(--border); color: var(--fg);
+  padding: 8px 14px; border-radius: 999px; font-size: 12.5px;
+  box-shadow: 0 10px 30px -10px var(--shadow-color);
+  animation: toastIn .25s cubic-bezier(.2,.7,.3,1);
+}
+.toast.out { opacity: 0; transition: opacity .3s, transform .3s; transform: translateY(-6px); }
+@keyframes toastIn { from { opacity: 0; transform: translateY(-8px); } }
+
+.minbar {
+  position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+  background: var(--surface-3); border: 1px solid var(--border);
+  border-radius: 999px; padding: 8px 16px; font-size: 12.5px;
+  display: flex; align-items: center; gap: 10px;
+  box-shadow: 0 14px 40px -10px var(--shadow-color);
+  opacity: 0; pointer-events: none; transition: opacity .25s;
+  z-index: 55;
+}
+.minbar.show { opacity: 1; pointer-events: auto; }
+.minbar svg { color: var(--accent); width: 15px; height: 15px; }
+.minbar button {
+  font-size: 12px; font-weight: 560; color: var(--accent);
+  padding: 3px 10px; border-radius: 999px; background: var(--accent-soft);
+}
+.minbar button:hover { background: var(--accent-soft-strong); }
+
+.modal-wrap {
+  position: fixed; inset: 0; z-index: 70;
+  background: var(--scrim); backdrop-filter: blur(3px);
+  display: none; align-items: center; justify-content: center;
+}
+.modal-wrap.show { display: flex; }
+.modal {
+  width: 340px; background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 20px; box-shadow: 0 30px 80px -20px var(--shadow-color);
+  animation: modalIn .2s cubic-bezier(.2,.7,.3,1);
+}
+@keyframes modalIn { from { opacity: 0; transform: scale(.96) translateY(6px); } }
+.modal h3 { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 8px; }
+.modal p { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
+.modal-btns { display: flex; justify-content: flex-end; gap: 10px; }
+.btn-plain { height: 32px; padding: 0 14px; border-radius: var(--r-sm); font-size: 12.5px; color: var(--muted); }
+.btn-plain:hover { background: var(--surface-2); color: var(--fg); }
+.btn-danger {
+  height: 32px; padding: 0 16px; border-radius: var(--r-sm);
+  background: var(--danger); color: var(--danger-ink); font-weight: 560; font-size: 12.5px;
+}
+.btn-danger:hover { filter: brightness(1.08); }
+
+/* ============ disconnected overlay ============ */
+.disc-overlay {
+  position: absolute; inset: 0; z-index: 40;
+  background: var(--surface); display: none;
+  flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+}
+.window.disconnected .disc-overlay { display: flex; }
+.disc-overlay svg { width: 44px; height: 44px; color: var(--danger); }
+.disc-overlay h2 { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; }
+.disc-overlay p { color: var(--muted); font-size: 13px; }
+.disc-overlay button {
+  height: 36px; padding: 0 20px; border-radius: var(--r-md);
+  background: var(--accent); color: var(--accent-ink); font-weight: 560; font-size: 13px;
+}
+.window { position: relative; }
+
+/* ============ tabbar wrap + tools ============ */
+.tabs-wrap { display: flex; align-items: stretch; overflow-x: auto; scrollbar-width: none; flex: 1; min-width: 0; }
+.tabs-wrap::-webkit-scrollbar { display: none; }
+.tabbar { overflow: hidden; }
+.tabbar-actions { display: flex; align-items: center; gap: 4px; padding: 0 8px; border-left: 1px solid var(--border-soft); flex: none; }
+.tab-tool { width: 28px; height: 28px; border-radius: var(--r-sm); display: grid; place-items: center; color: var(--muted); transition: background .12s, color .12s; }
+.tab-tool:hover { background: var(--surface-2); color: var(--fg); }
+.tab-tool svg { width: 15px; height: 15px; }
+.tab .t-ic { width: 15px; height: 15px; flex: none; color: var(--muted); }
+.tab.active .t-ic { color: var(--accent); }
+.tab.active[data-kind="files"], .tab.active[data-kind="proc"] { background: var(--surface); }
+
+/* ============ empty state ============ */
+.term-empty .t-e-title { font-size: 14px; font-weight: 600; color: var(--fg); letter-spacing: -0.01em; }
+.term-empty-btns { display: flex; gap: 10px; }
+.term-empty button.primary { background: var(--accent); color: var(--accent-ink); font-weight: 560; border: 0; }
+.term-empty button.primary:hover { filter: brightness(1.06); }
+.term-empty-hint { font-size: 11.5px; color: var(--muted); letter-spacing: .02em; }
+
+/* ============ file manager ============ */
+.files-view { flex: 1; min-height: 0; display: none; flex-direction: column; background: var(--surface); }
+.files-tool { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-bottom: 1px solid var(--border-soft); flex-wrap: wrap; }
+.files-path { display: flex; align-items: center; gap: 3px; flex: 1; min-width: 0; font-family: var(--font-mono); font-size: 12.5px; overflow: hidden; white-space: nowrap; }
+.fp-up { width: 26px; height: 26px; border-radius: var(--r-sm); display: grid; place-items: center; color: var(--muted); flex: none; }
+.fp-up:hover { background: var(--surface-2); color: var(--fg); }
+.fp-up svg { width: 14px; height: 14px; }
+.fp-crumb { font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); padding: 3px 6px; border-radius: 5px; }
+.fp-crumb:hover { background: var(--surface-2); color: var(--accent); }
+.fp-crumb.last { color: var(--fg); pointer-events: none; }
+.crumb-sep { color: var(--border); }
+.files-actions { display: flex; gap: 6px; }
+.fp-btn { display: inline-flex; align-items: center; gap: 5px; height: 27px; padding: 0 9px; border-radius: var(--r-sm); border: 1px solid var(--border); background: var(--surface-2); font-size: 11.5px; color: var(--muted); transition: border-color .12s, color .12s; }
+.fp-btn:hover { border-color: var(--accent-dim); color: var(--accent); }
+.fp-btn svg { width: 12px; height: 12px; }
+.files-note { font-size: 10px; letter-spacing: .06em; color: var(--muted); font-family: var(--font-mono); }
+.files-head { display: grid; grid-template-columns: minmax(0,1fr) 92px 148px 100px; gap: 10px; padding: 7px 14px; font-size: 10.5px; letter-spacing: .06em; color: var(--muted); border-bottom: 1px solid var(--border-soft); }
+.files-list { flex: 1; overflow-y: auto; min-height: 0; padding: 4px 6px; }
+.frow { display: grid; grid-template-columns: minmax(0,1fr) 92px 148px 100px; gap: 10px; align-items: center; padding: 6px 8px; border-radius: var(--r-sm); font-size: 12.5px; cursor: default; user-select: none; }
+.frow:hover { background: var(--surface-2); }
+.frow.is-dir .f-name { color: var(--fg); }
+.col-name { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.frow .f-ic { width: 15px; height: 15px; flex: none; color: var(--muted); }
+.frow.is-dir .f-ic { color: var(--warn); }
+.f-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.col-size, .col-md, .col-pm { font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.new-row { animation: toastIn .2s; }
+.new-name { flex: 1; background: none; border: 0; outline: 0; color: var(--fg); font: inherit; caret-color: var(--accent); border-bottom: 1px solid var(--accent-dim); }
+.files-status { padding: 6px 14px; border-top: 1px solid var(--border-soft); font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; font-family: var(--font-mono); }
+.files-empty {
+  display: flex; align-items: center; justify-content: center;
+  padding: 34px 0; color: var(--muted); font-size: 12.5px;
+}
+
+/* ============ context menu ============ */
+.ctx-menu { position: fixed; z-index: 80; display: none; min-width: 178px; background: var(--surface-3); border: 1px solid var(--border); border-radius: var(--r-md); padding: 5px; box-shadow: 0 16px 40px -12px var(--shadow-color); animation: modalIn .12s; }
+.ctx-item { width: 100%; display: flex; align-items: center; gap: 9px; padding: 7px 9px; border-radius: var(--r-sm); font-size: 12.5px; color: var(--fg); text-align: left; }
+.ctx-item:hover { background: var(--surface-2); }
+.ctx-item svg { width: 14px; height: 14px; color: var(--muted); }
+.ctx-item.danger { color: var(--danger); }
+.ctx-item.danger svg { color: var(--danger); }
+.ctx-item.danger:hover { background: var(--danger-soft); }
+.ctx-sep { height: 1px; background: var(--border-soft); margin: 4px 6px; }
+
+/* ============ process manager ============ */
+.proc-view { flex: 1; min-height: 0; display: none; flex-direction: column; background: var(--surface); }
+.proc-tool { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-bottom: 1px solid var(--border-soft); }
+.proc-tool .pt-title { font-size: 12px; font-weight: 560; letter-spacing: .02em; }
+.proc-tool .pt-count { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+.proc-search { display: flex; align-items: center; gap: 6px; margin-left: auto; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--r-sm); padding: 0 8px; height: 27px; color: var(--muted); }
+.proc-search svg { width: 12px; height: 12px; }
+.proc-search input { background: none; border: 0; outline: 0; color: var(--fg); font-size: 12px; width: 150px; }
+.proc-wrap { flex: 1; overflow: auto; min-height: 0; }
+.proc-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.proc-table th { position: sticky; top: 0; background: var(--surface-2); text-align: left; font-size: 10.5px; letter-spacing: .06em; color: var(--muted); padding: 7px 10px; white-space: nowrap; cursor: pointer; user-select: none; border-bottom: 1px solid var(--border); }
+.proc-table th:hover { color: var(--fg); }
+.proc-table th.sorted { color: var(--accent); }
+.proc-table td { padding: 5px 10px; border-bottom: 1px solid var(--border-soft); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.proc-table tr:hover td { background: var(--surface-2); }
+.proc-name { display: flex; align-items: center; gap: 8px; }
+.proc-name svg { width: 13px; height: 13px; color: var(--muted); }
+.pnum { font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); }
+.pcpu { display: flex; align-items: center; gap: 6px; }
+.pcpu .mini { width: 42px; height: 4px; border-radius: 2px; background: var(--surface-3); overflow: hidden; }
+.pcpu .mini i { display: block; height: 100%; background: var(--accent); }
+.pcpu.hot .mini i { background: var(--warn); }
+.pcpu.hot2 .mini i { background: var(--danger); }
+.p-exe { max-width: 250px; overflow: hidden; text-overflow: ellipsis; color: var(--muted); font-family: var(--font-mono); font-size: 11px; }
+.btn-kill { height: 22px; padding: 0 9px; border-radius: 5px; font-size: 11px; color: var(--muted); border: 1px solid var(--border); }
+.btn-kill:hover { color: var(--danger); border-color: var(--danger); background: var(--danger-soft); }
+.proc-empty { text-align: center; color: var(--muted); padding: 26px 10px; }
+
+/* ============ modals: add server + editor ============ */
+.modal-wide { width: 460px; max-width: 92vw; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field-wide { grid-column: 1 / -1; }
+.field label { font-size: 11px; letter-spacing: .04em; color: var(--muted); }
+.field input, .field select { height: 34px; border-radius: var(--r-sm); background: var(--surface-2); border: 1px solid var(--border); color: var(--fg); padding: 0 10px; font-size: 12.5px; outline: 0; transition: border-color .12s, box-shadow .12s; }
+.field input:focus, .field select:focus { border-color: var(--accent-dim); box-shadow: 0 0 0 3px var(--ring); }
+.seg { display: flex; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--r-sm); padding: 2px; gap: 2px; }
+.seg-btn { flex: 1; height: 28px; border-radius: 6px; font-size: 12px; color: var(--muted); transition: all .12s; }
+.seg-btn.active { background: var(--surface-3); color: var(--fg); box-shadow: 0 1px 3px var(--shadow-color); }
+.btn-primary { height: 32px; padding: 0 16px; border-radius: var(--r-sm); background: var(--accent); color: var(--accent-ink); font-weight: 560; font-size: 12.5px; }
+.btn-primary:hover { filter: brightness(1.06); }
+
+.modal-edit { width: 680px; max-width: 92vw; display: flex; flex-direction: column; gap: 12px; }
+.edit-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.edit-path { font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.edit-perm { font-family: var(--font-mono); font-size: 11px; color: var(--muted); border: 1px solid var(--border); padding: 3px 8px; border-radius: 6px; flex: none; }
+#editArea { height: 380px; resize: none; background: var(--term-bg); color: var(--fg); border: 1px solid var(--border); border-radius: var(--r-md); padding: 12px; font-family: var(--font-mono); font-size: 12.5px; line-height: 1.6; outline: 0; caret-color: var(--accent); }
+#editArea:focus { border-color: var(--accent-dim); }
+.edit-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.edit-foot > span { font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* ============ theme switcher ============ */
+.theme-pop {
+  position: fixed; z-index: 95; width: 196px;
+  background: var(--surface-3); border: 1px solid var(--border);
+  border-radius: 12px; padding: 6px;
+  box-shadow: 0 16px 40px -12px var(--shadow-color);
+  display: none; animation: modalIn .12s;
+}
+.theme-pop.open { display: block; }
+.tp-head { display: flex; align-items: center; justify-content: space-between; padding: 6px 8px 8px; }
+.tp-head span { font-size: 10.5px; letter-spacing: .08em; color: var(--muted); }
+.tp-item {
+  width: 100%; display: flex; align-items: center; gap: 10px;
+  padding: 7px 8px; border-radius: 9px; text-align: left;
+  transition: background .12s;
+}
+.tp-item:hover { background: var(--surface-2); }
+.tp-item.active { background: var(--surface-2); }
+.tp-swatch {
+  position: relative; width: 26px; height: 26px; flex: none;
+  border-radius: 7px; border: 1px solid var(--border); overflow: hidden;
+}
+.tp-swatch::before { content: ''; position: absolute; inset: 0; background: var(--sw-bg); }
+.tp-swatch::after {
+  content: ''; position: absolute; right: 4px; bottom: 4px;
+  width: 9px; height: 9px; border-radius: 50%; background: var(--sw-accent);
+}
+.tp-swatch.s-midnight { --sw-bg: oklch(13% 0.014 250); --sw-accent: oklch(78% 0.11 245); }
+.tp-swatch.s-ember { --sw-bg: oklch(13% 0.02 330); --sw-accent: oklch(79% 0.14 60); }
+.tp-swatch.s-paper { --sw-bg: oklch(95% 0.005 250); --sw-accent: oklch(54% 0.15 305); }
+.tp-swatch.s-sand { --sw-bg: oklch(96.6% 0.02 90); --sw-accent: oklch(50% 0.09 200); }
+.tp-name { flex: 1; font-size: 12.5px; color: var(--fg); }
+.tp-tag { font-size: 9.5px; letter-spacing: .06em; color: var(--muted); font-family: var(--font-mono); }
+.tp-check { width: 14px; height: 14px; color: var(--accent); opacity: 0; flex: none; }
+.tp-item.active .tp-name { color: var(--accent); }
+.tp-item.active .tp-check { opacity: 1; }
+
+/* ============ responsive ============ */
+@media (max-width: 980px) {
+  .main { grid-template-columns: 236px 1fr; }
+  .inspector { position: absolute; top: 48px; right: 0; bottom: 30px; width: 276px; z-index: 30; box-shadow: -16px 0 40px -18px var(--shadow-color); transform: translateX(100%); transition: transform .25s; }
+  .inspector.open { transform: none; }
+}
+@media (max-width: 700px) {
+  .main { grid-template-columns: 1fr; }
+  .sidebar { position: absolute; top: 48px; left: 0; bottom: 30px; width: 240px; z-index: 29; transform: translateX(-100%); transition: transform .25s; box-shadow: 16px 0 40px -18px var(--shadow-color); }
+  .sidebar.open { transform: none; }
+  .tab { min-width: 120px; }
+}
+@media (max-width: 560px) {
+  .files-head, .frow { grid-template-columns: minmax(0,1fr) 74px 108px; }
+  .files-head span:nth-child(4), .frow > :nth-child(4) { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="toasts" id="toasts"></div>
+
+<div class="minbar" id="minbar">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="3"/><path d="M8 21h8M12 17v4"/></svg>
+  <span data-i="minMin">SSH Workbench — 已最小化</span>
+  <button id="minbarRestore" data-i="restore">還原視窗</button>
+</div>
+
+<div class="modal-wrap" id="closeModal">
+  <div class="modal">
+    <h3 data-i="closeTitle">中斷連線並關閉視窗？</h3>
+    <p data-i="closeBody">所有開啟的分頁與連線都會被中斷。你可以隨時重新連線。</p>
+    <div class="modal-btns">
+      <button class="btn-plain" data-act="cancel" data-i="cancel">取消</button>
+      <button class="btn-danger" data-act="confirm" data-i="closeConfirm">關閉視窗</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrap" id="addModal">
+  <div class="modal modal-wide">
+    <h3 data-i="addTitle">新增伺服器</h3>
+    <p data-i="addBody">填寫連線資訊，儲存後會立即建立連線。</p>
+    <div class="form-grid">
+      <div class="field"><label data-i="lblName">名稱</label><input id="afName" data-ip="phName" placeholder="例如 prod-web-02"></div>
+      <div class="field"><label data-i="lblHost">主機位址</label><input id="afHost" data-ip="phHost" placeholder="IP 或主機名稱"></div>
+      <div class="field"><label data-i="lblPort">通訊埠</label><input id="afPort" value="22" inputmode="numeric"></div>
+      <div class="field"><label data-i="lblUser">使用者</label><input id="afUser" data-ip="phUser" placeholder="root"></div>
+      <div class="field"><label data-i="lblProto">通訊協定</label>
+        <div class="seg">
+          <button class="seg-btn active" data-proto="SSH">SSH</button>
+          <button class="seg-btn" data-proto="SFTP">SFTP</button>
+        </div>
+      </div>
+      <div class="field"><label data-i="lblGroup">伺服器群組</label>
+        <select id="afGroup"></select>
+      </div>
+      <div class="field field-wide"><label data-i="lblAuth">驗證方式</label>
+        <div class="seg">
+          <button class="seg-btn active" data-auth="密碼">密碼</button>
+          <button class="seg-btn" data-auth="金鑰檔案">金鑰檔案</button>
+        </div>
+      </div>
+      <div class="field field-wide"><label data-i="lblSecret">密碼 / 金鑰密碼</label><input id="afPass" type="password" data-ip="phSecret" placeholder="••••••••"></div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-plain" id="afCancel" data-i="cancel">取消</button>
+      <button class="btn-primary" id="afSave" data-i="saveConnect">儲存並連線</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrap" id="editModal">
+  <div class="modal modal-edit">
+    <div class="edit-head">
+      <div>
+        <h3 id="editTitle">server.js</h3>
+        <div class="edit-path" id="editPath">/home/deploy/app/server.js</div>
+      </div>
+      <span class="edit-perm" id="editPerm">-rw-r--r--</span>
+    </div>
+    <textarea id="editArea" spellcheck="false"></textarea>
+    <div class="edit-foot">
+      <span id="editMeta" data-i="editMeta0">1 行 · UTF-8</span>
+      <div class="modal-btns">
+        <button class="btn-plain" id="editCancel" data-i="cancel">關閉</button>
+        <button class="btn-primary" id="editSave" data-i="save">儲存</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ctx-menu" id="ctxMenu"></div>
+
+
+<div class="desktop">
+  <div class="window" id="appWindow">
+
+    <header class="titlebar" data-od-id="titlebar">
+      <div class="traffic">
+        <button class="tl tl-close" id="btnClose" data-atl="atlClose" aria-label="關閉">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+        <button class="tl tl-min" id="btnMin" data-atl="atlMin" aria-label="最小化">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path d="M5 12h14"/></svg>
+        </button>
+      </div>
+      <div class="app-brand">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17l6-6-6-6M12 19h8"/></svg>
+        <span>SSH Workbench</span>
+        <span class="crumb">/ <b id="tbServer">prod-app-01</b></span>
+      </div>
+      <div class="titlebar-spacer"></div>
+      <div class="titlebar-actions">
+        <button class="lang-btn" id="langBtn" data-tl="langTitle">EN</button>
+        <div data-od-id="theme-switcher">
+          <button class="icon-btn" id="btnTheme" data-atl="atlTheme" aria-label="切換佈景主題" aria-expanded="false" aria-haspopup="menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" stroke="none"/></svg>
+          </button>
+          <div class="theme-pop" id="themePop" data-od-id="theme-menu" role="menu"></div>
+        </div>
+        <button class="icon-btn" id="btnTogglePanel" data-atl="atlPanel" aria-label="切換資訊欄">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M15 4v16"/></svg>
+        </button>
+        <button class="icon-btn" id="btnSettings" data-atl="atlSettings" aria-label="設定">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="main">
+      <aside class="sidebar" id="sidebar" data-od-id="sidebar">
+        <div class="side-head">
+          <div class="search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+            <input type="text" id="searchInput" data-ip="searchPh" data-atl="searchPh" placeholder="搜尋伺服器與群組" autocomplete="off">
+          </div>
+          <button class="btn-add" id="btnAddServer" data-atl="atlAdd" aria-label="新增伺服器">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+        </div>
+        <div class="side-scroll" id="groupList"></div>
+        <div class="side-foot">
+          <button class="btn-new" id="btnNewServer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            <span data-i="addServer">新增伺服器</span>
+          </button>
+        </div>
+      </aside>
+
+      <section class="terminal-pane" data-od-id="terminal">
+        <div class="tabbar" id="tabbar">
+          <div class="tabs-wrap" id="tabWrap"></div>
+          <div class="tabbar-actions">
+            <button class="tab-tool" id="btnFilesTool" data-tl="toolFiles" title="SFTP 檔案總管">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            </button>
+            <button class="tab-tool" id="btnProcTool" data-tl="toolProc" title="進程管理">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="term" id="term">
+          <div class="term-scroll" id="termScroll"></div>
+          <div class="term-empty" id="termEmpty" style="display:none">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+            <p class="t-e-title" data-i="emptyTitle">目前沒有開啟的連線</p>
+            <div class="term-empty-btns">
+              <button id="btnEmptyConnect" class="primary" data-i="emptyAdd">新增連線</button>
+              <button id="btnEmptyDemo" data-i="emptyDemo">連線至示範伺服器</button>
+            </div>
+            <span class="term-empty-hint" data-i="emptyHint">用左側「新增伺服器」建立主機，或直接連線到示範主機</span>
+          </div>
+          <div class="files-view" id="filesView"></div>
+          <div class="proc-view" id="procView"></div>
+        </div>
+      </section>
+
+      <aside class="inspector" id="inspector" data-od-id="inspector">
+        <div class="ins-body" id="inspectorBody"></div>
+      </aside>
+    </div>
+
+    <footer class="statusbar" data-od-id="statusbar">
+      <div class="st">
+        <span class="dot online" id="sbDot"></span>
+        <span class="mono" id="sbServer">prod-app-01</span>
+        <span>·</span>
+        <span id="sbState" data-i="stConnected" style="color:var(--success)">已連線</span>
+      </div>
+      <div class="st-sep"></div>
+      <div class="st">
+        <span class="st-down">▼ RX</span><span class="mono" id="sbRx">1.24 MB/s</span>
+        <span class="st-up">▲ TX</span><span class="mono" id="sbTx">186 KB/s</span>
+      </div>
+      <div class="st-sep"></div>
+      <div class="st"><span class="mono" id="sbPing">38 ms</span></div>
+      <div class="st-spacer"></div>
+      <div class="st"><span class="mono" id="sbClock">09:15:42</span></div>
+      <div class="st-sep"></div>
+      <div class="st"><span class="kbd">Ctrl</span>+<span class="kbd">T</span> <span data-i="sbNewTab">新增分頁</span></div>
+      <div class="st"><span class="kbd">Cmd</span>+<span class="kbd">R</span> <span data-i="sbReconnect">重新連線</span></div>
+    </footer>
+
+    <div class="disc-overlay" id="discOverlay">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6a8 8 0 0 0-12 .7M18 11v1a4 4 0 0 1-1.5 3.1M13.5 15H6a4 4 0 0 1-4-4v-1"/><path d="M12 6V3M3 5l18 14M8 8l13 13" stroke="currentColor"/></svg>
+      <h2 data-i="discTitle">連線已中斷</h2>
+      <p><span data-i="discPre">主機</span> <span id="discHost" style="font-family:var(--font-mono)">prod-app-01</span> <span data-i="discPost">的 SSH 工作階段已關閉</span></p>
+      <button id="btnReconnect" data-i="reconnect">重新連線</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ================= data ================= */
+const GROUPS_DEFAULT = ['常用伺服器', '生產環境', '開發環境', '客戶端', '個人伺服器'];
+const GROUPS_KEY = 'ssh-wb-groups-demo';
+let GROUPS;
+try { const g = JSON.parse(localStorage.getItem(GROUPS_KEY)); GROUPS = Array.isArray(g) && g.length ? g : GROUPS_DEFAULT.slice(); } catch (e) { GROUPS = GROUPS_DEFAULT.slice(); }
+function saveGroups() { try { localStorage.setItem(GROUPS_KEY, JSON.stringify(GROUPS)); } catch (e) { /* ignore */ } }
+function renameGroup(oldName, newName) {
+  const i = GROUPS.indexOf(oldName);
+  if (i >= 0) GROUPS[i] = newName;
+  SERVERS.forEach(s => { if (s.group === oldName) s.group = newName; });
+  saveGroups();
+}
+function deleteGroup(name) {
+  GROUPS = GROUPS.filter(g => g !== name);
+  SERVERS.forEach(s => { if (s.group === name) s.group = '常用伺服器'; });
+  saveGroups();
+}
+const SERVERS = [
+  { id:'prod-app-01', name:'prod-app-01', group:'常用伺服器', ip:'203.0.113.24', port:22, proto:'SSH', user:'deploy', os:'Ubuntu 22.04', kernel:'6.5.0-45-generic', ver:'22.04.4 LTS', status:'online', lat:38, fav:true,
+    cpu:34, mem:62, disk:71, uptime:'42 days', load:'0.41, 0.38, 0.35', lastLogin:'2026-08-03 09:12:44', srcIp:'61.216.32.10', rx:1.24, tx:0.186, enc:'aes256-gcm@openssh.com', fp:'SHA256:oL9f…7xKq', fs:'ext4 / 58GB' },
+  { id:'prod-db-01', name:'prod-db-01', group:'生產環境', ip:'203.0.113.31', port:22, proto:'SSH', user:'ubuntu', os:'Ubuntu 22.04', kernel:'6.5.0-45-generic', ver:'22.04.4 LTS', status:'online', lat:45, fav:false,
+    cpu:71, mem:84, disk:42, uptime:'120 days', load:'2.18, 2.02, 1.94', lastLogin:'2026-08-03 08:03:11', srcIp:'10.0.12.1', rx:3.85, tx:1.02, enc:'aes256-gcm@openssh.com', fp:'SHA256:mQ2p…9RwC', fs:'ext4 / 120GB' },
+  { id:'dev-staging', name:'dev-staging', group:'開發環境', ip:'10.0.12.8', port:22, proto:'SSH', user:'dev', os:'Debian 12', kernel:'6.1.0-18-amd64', ver:'12 (bookworm)', status:'online', lat:12, fav:false,
+    cpu:12, mem:38, disk:55, uptime:'6 days', load:'0.18, 0.21, 0.19', lastLogin:'2026-08-03 09:02:55', srcIp:'10.0.12.1', rx:0.42, tx:0.09, enc:'chacha20-poly1305@openssh.com', fp:'SHA256:h3nA…k9Pe', fs:'ext4 / 80GB' },
+  { id:'dev-local-vm', name:'dev-local-vm', group:'開發環境', ip:'192.168.1.24', port:22, proto:'SSH', user:'neverwin', os:'macOS 14.5', kernel:'Darwin 23.5.0', ver:'14.5', status:'online', lat:4, fav:true,
+    cpu:8, mem:44, disk:63, uptime:'3 days', load:'0.62, 0.58, 0.55', lastLogin:'2026-08-03 09:14:02', srcIp:'192.168.1.10', rx:0.18, tx:0.03, enc:'aes256-gcm@openssh.com', fp:'SHA256:lW4m…3BxF', fs:'apfs / 1TB' },
+  { id:'client-work-a', name:'工作站-A', group:'客戶端', ip:'172.16.0.9', port:2222, proto:'SFTP', user:'client', os:'CentOS 7', kernel:'3.10.0-1160', ver:'7.9.2009', status:'online', lat:88, fav:true,
+    cpu:26, mem:51, disk:77, uptime:'9 days', load:'0.33, 0.40, 0.36', lastLogin:'2026-08-03 07:41:20', srcIp:'172.16.0.1', rx:0.66, tx:0.21, enc:'aes256-ctr', fp:'SHA256:v8Nd…5HzQ', fs:'xfs / 200GB' },
+  { id:'home-nas', name:'home-nas', group:'個人伺服器', ip:'192.168.1.5', port:22, proto:'SFTP', user:'nas', os:'openmediavault 6', kernel:'6.1.0', ver:'6', status:'offline', lat:null, fav:false,
+    cpu:0, mem:0, disk:81, uptime:'—', load:'—', lastLogin:'2026-08-02 22:15:47', srcIp:'192.168.1.10', rx:0, tx:0, enc:'aes128-gcm@openssh.com', fp:'SHA256:Q5fK…2aMn', fs:'ext4 / 4TB' }
+];
+function helpText() {
+  return [t('termHelp'), t('termHelpSftp')];
+}
+
+/* ================= state ================= */
+const tabs = [];   // {serverId, lines:[]}
+let activeTab = -1;
+let live = {};     // per-server live traffic/cpu
+let panelOpen = window.innerWidth > 980;
+/* ================= i18n ================= */
+const LANG_DEFAULT = 'en';
+const LANG_KEY = 'ssh-wb-lang-demo';
+let LANG = 'zh-TW';
+try { LANG = localStorage.getItem(LANG_KEY) || LANG_DEFAULT; } catch (e) { /* ignore */ }
+
+const I18N = {
+  'zh-TW': {
+    minMin: 'SSH Workbench — 已最小化', restore: '還原視窗',
+    closeTitle: '中斷連線並關閉視窗？', closeBody: '所有開啟的分頁與連線都會被中斷。你可以隨時重新連線。',
+    cancel: '取消', closeConfirm: '關閉視窗',
+    addTitle: '新增伺服器', addBody: '填寫連線資訊，儲存後會立即建立連線。',
+    lblName: '名稱', lblHost: '主機位址', lblPort: '通訊埠', lblUser: '使用者', lblProto: '通訊協定', lblGroup: '伺服器群組', lblAuth: '驗證方式', lblSecret: '密碼 / 金鑰密碼',
+    phName: '例如 prod-web-02', phHost: 'IP 或主機名稱', phUser: 'root', phSecret: '••••••••',
+    authPwd: '密碼', authKey: '金鑰檔案', saveConnect: '儲存並連線', save: '儲存',
+    gFav: '常用伺服器', gProd: '生產環境', gDev: '開發環境', gClient: '客戶端', gHome: '個人伺服器',
+    emptyTitle: '目前沒有開啟的連線', emptyAdd: '新增連線', emptyDemo: '連線至示範伺服器', emptyHint: '用左側「新增伺服器」建立主機，或直接連線到示範主機',
+    sbNewTab: '新增分頁', sbReconnect: '重新連線',
+    discTitle: '連線已中斷', discPre: '主機', discPost: '的 SSH 工作階段已關閉', reconnect: '重新連線',
+    searchPh: '搜尋伺服器與群組', addServer: '新增伺服器',
+    toolFiles: 'SFTP 檔案總管', toolProc: '進程管理', langTitle: '切換語言：繁體中文 / English',
+    thLabel: '佈景主題', thDark: '深色', thLight: '淺色', thMidnight: '午夜', thEmber: '餘燼', thPaper: '紙白', thSand: '沙金', atlTheme: '切換佈景主題',
+    noResults: '找不到相符的伺服器', emptyDir: '此資料夾是空的', noProcs: '沒有符合條件的程序', termInput: '指令輸入',
+    ctxNewGroup: '新增資料夾', ctxRenameGroup: '重新命名資料夾', ctxDeleteGroup: '刪除資料夾',
+    phNewGroup: '資料夾名稱', tGroupCreated: '資料夾 {n} 已建立', tGroupRenamed: '資料夾已重新命名為 {n}', tGroupDeleted: '已刪除資料夾 {n}', tNameExists: '名稱已存在', groupMoved: '伺服器已移至「常用伺服器」',
+    atlClose: '關閉', atlMin: '最小化', atlPanel: '切換資訊欄', atlSettings: '設定', atlAdd: '新增伺服器',
+    stConnected: '已連線', stOffline: '未連線', offlineTag: '離線',
+    tConnected: '已連線至 {n}', tFilesOpened: '已開啟 {n} 的檔案總管', tProcOpened: '已開啟 {n} 的進程管理',
+    tOfflineNo: '{n} 目前離線，無法連線', tRefreshed: '已重新整理 {n}', tDeleted: '已刪除 {n}',
+    tDownloading: '已開始下載 {n}', tRenamed: '已重新命名為 {n}',
+    tCreatedDir: '資料夾 {n} 已建立', tCreatedFile: '檔案 {n} 已建立',
+    tTerminated: '已終止 {n}（PID {p}）', tRefreshProcs: '已重新整理 {n} 的進程',
+    tSaved: '已儲存 {n}', tReconnecting: '正在重新連線至 {n}…', tReconnected: '已重新連線至 {n}',
+    tSettings: '設定面板（原型佔位）', tConnectFirst: '請先連線到一個伺服器', tNoDemo: '沒有可連線的示範主機',
+    tFillRequired: '請填寫名稱、主機位址與使用者', tCreatedConn: '已建立並連線至 {n}', tRestored: '已重新建立 SSH 連線',
+    tQuickTunnel: '使用 {n} 的快速 SSH 隧道…',
+    termLastLogin: '最後登入：{a} 來自 {b}', termSftpEst: '[SFTP] 已建立安全檔案傳輸工作階段',
+    termHelp: '可用指令：ls · cd · uptime · ping <host> · free · clear · help · exit',
+    termHelpSftp: 'SFTP 模式：連線類型為 SFTP 的伺服器可在右側開啟檔案總管。',
+    kindSuffixFiles: ' · 檔案', kindSuffixProc: ' · 進程',
+    fhName: '名稱', fhSize: '大小', fhMod: '修改時間', fhPerm: '權限',
+    fRefresh: '重新整理', fNewFile: '新增檔案', fNewDir: '新增資料夾', fUp: '上一層',
+    phDir: '資料夾名稱', phFile: '檔案名稱',
+    fsStatus: '{a} 個項目 · {b} · 已用 {c}%',
+    ctxNewFile: '新增檔案', ctxNewDir: '新增資料夾', ctxRefresh: '重新整理',
+    ctxOpen: '開啟', ctxEdit: '開啟編輯', ctxDownload: '下載', ctxRename: '重新命名', ctxDelete: '刪除',
+    ptTitle: '進程管理', ptSearch: '搜尋名稱或 PID', ptKill: '結束',
+    pcName: '名稱', pcUser: '使用者', pcMem: '記憶體 %', pcGpu: 'GPU %', pcExe: '檔案位置', pcPm: '權限',
+    insEmpty: '選擇一個伺服器以查看詳情',
+    insLoad: '系統負載', insUptime: '{n} 運行', insCpu: 'CPU 使用率', insMem: '記憶體', insDisk: '磁碟',
+    insNet: '即時網路流量', insRx: '下載 RX', insTx: '上傳 TX',
+    insConn: '連線資訊', insHost: '主機', insUser: '使用者', insPort: '通訊埠', insProto: '通訊協定', insEnc: '加密演算法', insFp: '主機金鑰', insFs: '檔案系統',
+    insReconnect: '重新連線', insSftp: 'SFTP 總管', insProc: '進程', offline: '已離線',
+    appTitle: 'SSH Workbench — 現代化 SSH/SFTP 客戶端', editMeta0: '1 行 · UTF-8',
+    editMeta: '{n} 行 · UTF-8 · {s}', editSaved: '{n} 行 · UTF-8 · 已儲存',
+    ctLogPreview: '（此為日誌檔，僅顯示預覽）', ctSampleNote: '# 原型範例檔案，可直接在此編輯。'
+  },
+  'en': {
+    minMin: 'SSH Workbench — minimized', restore: 'Restore',
+    closeTitle: 'Disconnect & close window?', closeBody: 'All open tabs and connections will be dropped. You can reconnect at any time.',
+    cancel: 'Cancel', closeConfirm: 'Close Window',
+    addTitle: 'Add Server', addBody: 'Enter connection details — saving connects immediately.',
+    lblName: 'Name', lblHost: 'Host Address', lblPort: 'Port', lblUser: 'Username', lblProto: 'Protocol', lblGroup: 'Server Group', lblAuth: 'Auth Method', lblSecret: 'Password / Key Passphrase',
+    phName: 'e.g. prod-web-02', phHost: 'IP or hostname', phUser: 'root', phSecret: '••••••••',
+    authPwd: 'Password', authKey: 'Key File', saveConnect: 'Save & Connect', save: 'Save',
+    gFav: 'Favorites', gProd: 'Production', gDev: 'Development', gClient: 'Clients', gHome: 'Personal',
+    emptyTitle: 'No active connections', emptyAdd: 'New Connection', emptyDemo: 'Connect to a demo server', emptyHint: 'Create a host from Add Server in the sidebar, or connect straight to a demo host.',
+    sbNewTab: 'New Tab', sbReconnect: 'Reconnect',
+    discTitle: 'Connection Lost', discPre: 'Host', discPost: 'SSH session closed', reconnect: 'Reconnect',
+    searchPh: 'Search servers and groups', addServer: 'Add Server',
+    toolFiles: 'SFTP File Manager', toolProc: 'Process Manager', langTitle: 'Switch language: 繁體中文 / English',
+    thLabel: 'Theme', thDark: 'Dark', thLight: 'Light', thMidnight: 'Midnight', thEmber: 'Ember', thPaper: 'Paper', thSand: 'Sand', atlTheme: 'Switch theme',
+    noResults: 'No matching servers', emptyDir: 'This folder is empty', noProcs: 'No matching processes', termInput: 'Command input',
+    ctxNewGroup: 'New Folder', ctxRenameGroup: 'Rename Folder', ctxDeleteGroup: 'Delete Folder',
+    phNewGroup: 'Folder name', tGroupCreated: 'Folder {n} created', tGroupRenamed: 'Folder renamed to {n}', tGroupDeleted: 'Deleted folder {n}', tNameExists: 'Name already exists', groupMoved: 'Servers moved to Favorites',
+    atlClose: 'Close', atlMin: 'Minimize', atlPanel: 'Toggle inspector', atlSettings: 'Settings', atlAdd: 'Add Server',
+    stConnected: 'Connected', stOffline: 'Not connected', offlineTag: 'Offline',
+    tConnected: 'Connected to {n}', tFilesOpened: 'File manager opened for {n}', tProcOpened: 'Process manager opened for {n}',
+    tOfflineNo: '{n} is offline — cannot connect', tRefreshed: 'Refreshed {n}', tDeleted: 'Deleted {n}',
+    tDownloading: 'Downloading {n}…', tRenamed: 'Renamed to {n}',
+    tCreatedDir: 'Folder {n} created', tCreatedFile: 'File {n} created',
+    tTerminated: 'Terminated {n} (PID {p})', tRefreshProcs: 'Refreshed processes on {n}',
+    tSaved: 'Saved {n}', tReconnecting: 'Reconnecting to {n}…', tReconnected: 'Reconnected to {n}',
+    tSettings: 'Settings panel (prototype)', tConnectFirst: 'Connect to a server first', tNoDemo: 'No demo host available',
+    tFillRequired: 'Please fill in name, host and username', tCreatedConn: 'Created and connected to {n}', tRestored: 'SSH connection re-established',
+    tQuickTunnel: 'Opening quick SSH tunnel to {n}…',
+    termLastLogin: 'Last login: {a} from {b}', termSftpEst: '[SFTP] Secure file-transfer session established',
+    termHelp: 'Commands: ls · cd · uptime · ping <host> · free · clear · help · exit',
+    termHelpSftp: 'SFTP: servers connected via SFTP can open the file manager from the inspector.',
+    kindSuffixFiles: ' · Files', kindSuffixProc: ' · Processes',
+    fhName: 'Name', fhSize: 'Size', fhMod: 'Modified', fhPerm: 'Permissions',
+    fRefresh: 'Refresh', fNewFile: 'New File', fNewDir: 'New Folder', fUp: 'Up one level',
+    phDir: 'Folder name', phFile: 'File name',
+    fsStatus: '{a} items · {b} · {c}% used',
+    ctxNewFile: 'New File', ctxNewDir: 'New Folder', ctxRefresh: 'Refresh',
+    ctxOpen: 'Open', ctxEdit: 'Edit', ctxDownload: 'Download', ctxRename: 'Rename', ctxDelete: 'Delete',
+    ptTitle: 'Process Manager', ptSearch: 'Search name or PID', ptKill: 'Kill',
+    pcName: 'Name', pcUser: 'User', pcMem: 'Mem %', pcGpu: 'GPU %', pcExe: 'File location', pcPm: 'Permissions',
+    insEmpty: 'Select a server to view details',
+    insLoad: 'System Load', insUptime: 'up {n}', insCpu: 'CPU Usage', insMem: 'Memory', insDisk: 'Disk',
+    insNet: 'Live Traffic', insRx: 'Download RX', insTx: 'Upload TX',
+    insConn: 'Connection', insHost: 'Host', insUser: 'User', insPort: 'Port', insProto: 'Protocol', insEnc: 'Encryption', insFp: 'Host Key', insFs: 'Filesystem',
+    insReconnect: 'Reconnect', insSftp: 'SFTP Manager', insProc: 'Processes', offline: 'Offline',
+    appTitle: 'SSH Workbench — Modern SSH/SFTP Client', editMeta0: '1 line · UTF-8',
+    editMeta: '{n} lines · UTF-8 · {s}', editSaved: '{n} lines · UTF-8 · Saved',
+    ctLogPreview: '(Log preview only)', ctSampleNote: '# Prototype sample file — edit me.'
+  }
+};
+
+function t(k, args) {
+  let s = (I18N[LANG] && I18N[LANG][k]) || I18N['en'][k] || k;
+  if (args) for (const a in args) s = s.split('{' + a + '}').join(args[a]);
+  return s;
+}
+const GRP_KEY = { '常用伺服器': 'gFav', '生產環境': 'gProd', '開發環境': 'gDev', '客戶端': 'gClient', '個人伺服器': 'gHome' };
+function tGroup(g) { return GRP_KEY[g] ? t(GRP_KEY[g]) : g; }
+function applyStatic() {
+  document.querySelectorAll('[data-i]').forEach(n => { n.textContent = t(n.dataset.i); });
+  document.querySelectorAll('[data-ip]').forEach(n => { n.placeholder = t(n.dataset.ip); });
+  document.querySelectorAll('[data-tl]').forEach(n => { n.title = t(n.dataset.tl); });
+  document.querySelectorAll('[data-atl]').forEach(n => { n.setAttribute('aria-label', t(n.dataset.atl)); });
+  const sel = $('afGroup');
+  if (sel) populateGroupSelect();
+  document.querySelectorAll('#addModal .seg-btn[data-auth]').forEach(b => { b.textContent = t(b.dataset.auth === '密碼' ? 'authPwd' : 'authKey'); });
+  document.documentElement.lang = LANG === 'en' ? 'en' : 'zh-TW';
+  document.title = t('appTitle');
+  const lb = $('langBtn'); if (lb) lb.textContent = LANG === 'en' ? '中' : 'EN';
+}
+function applyLang() {
+  try { localStorage.setItem(LANG_KEY, LANG); } catch (e) { /* ignore */ }
+  applyStatic();
+  renderSidebar($('searchInput').value.trim().toLowerCase());
+  renderTabs(); renderTabView(); refreshActiveRow();
+  renderInspector(); updateTitle();
+  renderThemePop();
+}
+
+const $ = id => document.getElementById(id);
+const el = (tag, cls, html) => { const n = document.createElement(tag); if (cls) n.className = cls; if (html !== undefined) n.innerHTML = html; return n; };
+
+const srv = id => SERVERS.find(s => s.id === id);
+
+function fmtRate(mb) { return mb >= 1 ? mb.toFixed(2) + ' MB/s' : Math.round(mb*1000) + ' KB/s'; }
+
+function makeSession(server) {
+  const lines = [
+    { t:'sys', h: t('termLastLogin', { a: server.lastLogin, b: server.srcIp }) },
+    { t:'sys', h:`${server.os} (GNU/Linux ${server.kernel} x86_64)` },
+    { t:'cmd', h:'cat /etc/os-release' },
+    { t:'out', h:`PRETTY_NAME="${server.os} ${server.ver}"` },
+    { t:'cmd', h:'uptime' },
+    { t:'out', h:` 09:15:31 up ${server.uptime},  1 user,  load average: ${server.load}` }
+  ];
+  if (server.proto === 'SFTP') lines.push({ t:'sys', h: t('termSftpEst') });
+  return lines;
+}
+
+/* ================= sidebar ================= */
+let sidebarEdit = null;   // { mode:'new' } | { mode:'rename', name }
+function sidebarGroupInput(mode, existing) {
+  const row = el('div', 'group-input');
+  row.dataset.odId = 'sidebar-folder-input';
+  const ic = mode === 'rename'
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><path d="M12 11v6M9 14h6"/></svg>';
+  row.innerHTML = `${ic}<input value="${existing ? escapeHtml(existing) : ''}" placeholder="${t('phNewGroup')}" aria-label="${t('phNewGroup')}" autocomplete="off">`;
+  const inp = row.querySelector('input');
+  const finish = () => {
+    const v = inp.value.trim();
+    const f = $('searchInput').value.trim().toLowerCase();
+    if (!v) { sidebarEdit = null; renderSidebar(f); return; }
+    if ((mode === 'rename' ? v !== existing : true) && GROUPS.includes(v)) { toast(t('tNameExists')); inp.focus(); return; }
+    if (mode === 'rename') { renameGroup(existing, v); toast(t('tGroupRenamed', { n: v })); }
+    else { GROUPS.push(v); saveGroups(); toast(t('tGroupCreated', { n: v })); }
+    sidebarEdit = null; renderSidebar(f);
+  };
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'Enter') finish();
+    if (e.key === 'Escape') { sidebarEdit = null; renderSidebar($('searchInput').value.trim().toLowerCase()); }
+  });
+  setTimeout(() => inp.focus(), 0);
+  return row;
+}
+function renderSidebar(filter) {
+  const list = $('groupList'); list.innerHTML = '';
+  let rendered = 0;
+  if (sidebarEdit && sidebarEdit.mode === 'new') { list.appendChild(sidebarGroupInput('new', null)); rendered++; }
+  GROUPS.forEach(g => {
+    if (sidebarEdit && sidebarEdit.mode === 'rename' && sidebarEdit.name === g) {
+      list.appendChild(sidebarGroupInput('rename', g)); rendered++;
+      return;
+    }
+    const items = SERVERS.filter(s => s.group === g && (!filter || s.name.toLowerCase().includes(filter) || s.ip.includes(filter)));
+    if (!items.length && GROUPS_DEFAULT.includes(g)) return;
+    rendered++;
+    const box = el('div', 'group');
+    box.appendChild(el('button', 'group-h',
+      `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+       ${tGroup(g)}<span class="cnt">${items.length}</span>`));
+    box.querySelector('.group-h').dataset.group = g;
+    box.querySelector('.group-h').onclick = () => box.classList.toggle('collapsed');
+    const itemsBox = el('div', 'group-items');
+    items.forEach(s => itemsBox.appendChild(srvRow(s, filter)));
+    box.appendChild(itemsBox);
+    list.appendChild(box);
+  });
+  if (!rendered && filter) {
+    const e = el('div', 'side-empty');
+    e.dataset.odId = 'sidebar-empty';
+    e.textContent = t('noResults');
+    list.appendChild(e);
+  }
+}
+function srvRow(s, filter) {
+  const row = el('button', 'srv' + (s.id === (tabs[activeTab] && tabs[activeTab].serverId) ? ' active' : '') + (s.fav ? ' fav' : ''));
+  row.dataset.id = s.id;
+  row.innerHTML = `
+    <span class="dot ${s.status}"></span>
+    <span class="srv-main">
+      <span class="srv-name">${s.name}</span><br>
+      <span class="srv-ip">${s.ip}:${s.port}</span>
+    </span>
+    <span class="srv-meta">
+      <span class="pill pill-proto">${s.proto}</span>
+      ${s.lat != null ? `<span class="srv-ip" style="font-size:10.5px">${s.lat}ms</span>` : `<span class="srv-ip" style="font-size:10.5px;color:var(--muted)">${t('offlineTag')}</span>`}
+    </span>`;
+  row.onclick = () => openServer(s.id);
+  return row;
+}
+function refreshActiveRow() {
+  document.querySelectorAll('#groupList .srv').forEach(r => {
+    const isActive = r.dataset.id === (tabs[activeTab] && tabs[activeTab].serverId);
+    r.classList.toggle('active', isActive);
+  });
+}
+
+/* ================= tabs + terminal ================= */
+const TAB_ICON = {
+  files: '<svg class="t-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>',
+  proc: '<svg class="t-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg>'
+};
+function kindSuffix(k) { return k === 'files' ? t('kindSuffixFiles') : k === 'proc' ? t('kindSuffixProc') : ''; }
+
+function renderTabs() {
+  const wrap = $('tabWrap'); wrap.innerHTML = '';
+  tabs.forEach((t, i) => {
+    const s = srv(t.serverId);
+    const tab = el('div', 'tab' + (i === activeTab ? ' active' : ''));
+    tab.dataset.kind = t.kind;
+    const dotColor = s.status === 'online' ? 'var(--success)' : 'var(--muted)';
+    const icon = t.kind === 'term' ? `<span class="t-dot" style="background:${dotColor}"></span>` : TAB_ICON[t.kind];
+    tab.innerHTML = `${icon}<span class="t-name">${escapeHtml(s.name)}${kindSuffix(t.kind)}</span>
+      <button class="t-close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>`;
+    tab.onclick = e => { if (!e.target.closest('.t-close')) activateTab(i); };
+    tab.querySelector('.t-close').onclick = e => { e.stopPropagation(); closeTab(i); };
+    wrap.appendChild(tab);
+  });
+  wrap.appendChild(el('button', 'tab-add',
+    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>`));
+  wrap.querySelector('.tab-add').onclick = () => newTab();
+}
+function activateTab(i) {
+  activeTab = i; renderTabs(); renderTabView(); refreshActiveRow(); updateTitle(); renderInspector();
+}
+function openTab(serverId, kind) {
+  kind = kind || 'term';
+  const found = tabs.findIndex(t => t.serverId === serverId && t.kind === kind);
+  if (found >= 0) { activateTab(found); return; }
+  const s = srv(serverId);
+  const t = { kind, serverId };
+  if (kind === 'term') t.lines = makeSession(s);
+  if (kind === 'files') { t.fs = fsOf(s); t.fpath = '/home/' + s.user; t.fsort = { key: 'name', asc: true }; }
+  if (kind === 'proc') { t.procs = procsOf(s); t.psort = { key: 'cpu', asc: false }; }
+  tabs.push(t);
+  activeTab = tabs.length - 1;
+  renderTabs(); renderTabView(); refreshActiveRow(); updateTitle(); renderInspector();
+  toast(kind === 'term' ? t('tConnected', { n: serverId }) : (kind === 'files' ? t('tFilesOpened', { n: serverId }) : t('tProcOpened', { n: serverId })));
+}
+function newTab() {
+  const first = SERVERS.find(s => !tabs.some(t => t.serverId === s.id) && s.status === 'online');
+  if (first) openTab(first.id); else openAddModal();
+}
+function closeTab(i) {
+  tabs.splice(i, 1);
+  if (!tabs.length) {
+    activeTab = -1; renderTabs(); renderTabView(); refreshActiveRow(); updateTitle(); renderInspector();
+    return;
+  }
+  if (i <= activeTab) activeTab = Math.max(0, i - 1);
+  renderTabs(); renderTabView(); refreshActiveRow(); updateTitle(); renderInspector();
+}
+function openServer(id) {
+  const s = srv(id);
+  if (s.status === 'offline') { toast(t('tOfflineNo', { n: s.name })); return; }
+  openTab(id, 'term');
+}
+
+function renderTabView() {
+  const scroll = $('termScroll'), empty = $('termEmpty'), fv = $('filesView'), pv = $('procView');
+  [scroll, empty, fv, pv].forEach(n => { n.style.display = 'none'; });
+  if (!tabs.length || activeTab < 0) { empty.style.display = 'flex'; return; }
+  const t = tabs[activeTab];
+  if (t.kind === 'files') { fv.style.display = 'block'; renderFiles(t); return; }
+  if (t.kind === 'proc') { pv.style.display = 'block'; renderProc(t); return; }
+  scroll.style.display = 'block';
+  renderTerminal();
+}
+
+function renderTerminal() {
+  const scroll = $('termScroll'); scroll.innerHTML = '';
+  const t = tabs[activeTab], s = srv(t.serverId);
+  t.lines.forEach(l => {
+    if (l.t === 'blank') { scroll.appendChild(el('div', 'term-line blank')); return; }
+    const div = el('div', 'term-line ' + l.t);
+    if (l.t === 'cmd') div.innerHTML = `<span class="prompt-p">${s.user}@${s.name}:~$ </span>${escapeHtml(l.h)}`;
+    else div.textContent = l.h;
+    scroll.appendChild(div);
+  });
+  const row = el('div', 'term-line input-row');
+  row.innerHTML = `<span class="prompt-p">${s.user}@${s.name}:~$ </span>`;
+  const input = el('input', 'term-input');
+  input.id = 'termInput'; input.spellcheck = false; input.autocomplete = 'off';
+  input.setAttribute('aria-label', t('termInput'));
+  row.appendChild(input);
+  scroll.appendChild(row);
+  scroll.scrollTop = scroll.scrollHeight;
+  input.focus();
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') runCommand(input.value); });
+  scroll.addEventListener('click', () => input.focus());
+}
+const escapeHtml = str => str.replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
+
+function runCommand(raw) {
+  const t = tabs[activeTab]; if (!t) return;
+  const s = srv(t.serverId);
+  const input = $('termInput'); input.value = '';
+  const cmd = raw.trim();
+  t.lines.push({ t:'cmd', h: cmd });
+  const c = cmd.split(/\s+/)[0];
+  if (!cmd) { /* no-op */ }
+  else if (c === 'clear') t.lines = [];
+  else if (c === 'help') helpText().forEach(h => t.lines.push({ t:'out', h }));
+  else if (c === 'ls') t.lines.push({ t:'out', h:'app/   config/   deploy.sh   logs/   node_modules/   package.json   README.md' });
+  else if (c === 'uptime') t.lines.push({ t:'out', h:` 09:15:31 up ${s.uptime},  1 user,  load average: ${s.load}` });
+  else if (c === 'ping') {
+    const host = cmd.split(/\s+/)[1] || 'example.com';
+    [1,2,3].forEach((n,i) => t.lines.push({ t:'out', h:`64 bytes from ${host} (93.184.216.34): icmp_seq=${n} ttl=56 time=${(s.lat + i*2 + 1)} ms` }));
+    t.lines.push({ t:'sys', h:`--- ${host} ping statistics --- 3 packets transmitted, 0% packet loss` });
+  }
+  else if (c === 'free') t.lines.push({ t:'out', h:'              total        used        free      shared  buff/cache\nMem:         15.6G        6.2G        4.8G       218M        4.6G\nSwap:         2.0G        0.0B        2.0G' });
+  else if (c === 'exit') { closeTab(activeTab); return; }
+  else if (c === 'ssh') { const host = cmd.split(/\s+/)[1]; t.lines.push({ t:'sys', h: t('tQuickTunnel', { n: host || 'remote' }) }); }
+  else t.lines.push({ t:'err', h:`bash: ${c}: command not found` });
+  renderTerminal();
+}
+
+/* ================= SFTP 檔案管理員 ================= */
+const D = (c = {}, pm = 'drwxr-xr-x', md = '2026-07-28 04:12') => ({ k: 'd', pm, md, c });
+const F = (sz, md = '2026-07-30 09:15', pm = '-rw-r--r--', ct = null) => ({ k: 'f', sz, md, pm, ct });
+function fsOf(s) {
+  const u = s.user;
+  const root = D({
+    home: D({
+      [u]: D({
+        app: D({
+          'package.json': F(5200, '2026-08-02 21:18', '-rw-r--r--', '{\n  "name": "my-app",\n  "version": "1.4.2",\n  "scripts": { "start": "node server.js" }\n}\n'),
+          'server.js': F(2400, '2026-08-02 21:20', '-rw-r--r--', 'const http = require("http");\n\nconst server = http.createServer((req, res) => {\n  res.end("hello from ' + s.name + '");\n});\n\nserver.listen(3000);\n'),
+          'deploy.sh': F(1800, '2026-08-02 21:21', '-rwxr-xr-x', '#!/usr/bin/env bash\n\nnpm ci && pm2 restart all\necho "deploy done"\n'),
+          '.env': F(320, '2026-08-02 21:16', '-rw-------', 'NODE_ENV=production\nPORT=3000\n')
+        }),
+        logs: D({
+          'access.log': F(12400000, '2026-08-03 09:14', '-rw-r--r--'),
+          'error.log': F(1200000, '2026-08-03 08:52', '-rw-r--r--', '[2026-08-03 08:52:11] error: EADDRINUSE: address already in use :3000\n')
+        }),
+        '.ssh': D({ 'authorized_keys': F(420, '2026-07-25 19:02', '-rw-------') }),
+        ...(s.proto === 'SFTP' ? { docs: D({
+          '報告-08月.docx': F(128400, '2026-08-01 10:22'),
+          '合約.pdf': F(842300, '2026-07-28 15:40'),
+          '備份.zip': F(18200000, '2026-07-30 09:12'),
+          '圖片': D({ 'banner.png': F(2100000, '2026-07-29 11:05'), 'logo.svg': F(8800, '2026-07-27 08:19') })
+        }) } : {})
+      })
+    }),
+    etc: D({
+      'hostname': F(14, '2026-07-28 04:12'),
+      'ssh': D({ 'sshd_config': F(3400, '2026-07-28 04:13', '-rw-r--r--', 'Port 22\nPermitRootLogin no\nPasswordAuthentication yes\n') }),
+      ...(s.id.includes('db') ? { postgresql: D({ 'postgresql.conf': F(28000, '2026-07-28 04:14') }) } : { nginx: D({ 'sites-enabled': D({ 'default': F(1800, '2026-07-28 04:15') }) }) })
+    }),
+    var: D({
+      log: D({ 'syslog': F(3100000, '2026-08-03 09:10') }),
+      ...(s.id.includes('db') ? { lib: D({ postgresql: D({ '16': D({ 'main': D({}) }) }) }) } : { www: D({ 'html': D({ 'index.html': F(910, '2026-07-29 12:00', '-rw-r--r--', '<h1>Welcome</h1>\n') }) }) })
+    }),
+    opt: D({ node: D({ 'bin': D({ 'node': F(65000000, '2026-06-11 10:00', '-rwxr-xr-x') }) }) }),
+    tmp: D({})
+  });
+  return root;
+}
+function resolve(root, path) {
+  let n = root;
+  for (const seg of path.split('/').filter(Boolean)) {
+    if (!n.c || !n.c[seg]) return null;
+    n = n.c[seg];
+  }
+  return n;
+}
+function joinPath(a, b) { return (a === '/' ? '' : a) + '/' + b; }
+function fmtSize(n) {
+  return n >= 1e9 ? (n / 1e9).toFixed(2) + ' GB' : n >= 1e6 ? (n / 1e6).toFixed(2) + ' MB' : n >= 1e3 ? Math.round(n / 1e3) + ' KB' : n + ' B';
+}
+
+function openFiles(id) { openTab(id, 'files'); }
+
+function renderFiles(tab) {
+  const view = $('filesView');
+  const s = srv(tab.serverId);
+  const node = resolve(tab.fs, tab.fpath) || tab.fs;
+  const entries = Object.entries(node.c || {}).sort(([a, av], [b, bv]) => {
+    if (av.k !== bv.k) return av.k === 'd' ? -1 : 1;
+    const d = tab.fsort.asc ? 1 : -1;
+    if (tab.fsort.key === 'sz') return (av.sz || 0) - (bv.sz || 0) * 1 * d;
+    if (tab.fsort.key === 'md') return (av.md || '').localeCompare(bv.md || '') * d;
+    return a.localeCompare(b) * d;
+  });
+  const segs = tab.fpath.split('/').filter(Boolean);
+  const crumbs = segs.map((sg, i) => `<button class="fp-crumb${i === segs.length - 1 ? ' last' : ''}" data-i="${i}">${escapeHtml(sg)}</button>`);
+  const crumbHtml = crumbs.length ? '<span class="crumb-sep">/</span>' + crumbs.join('<span class="crumb-sep">/</span>') : '';
+  view.innerHTML = `
+    <div class="files-tool">
+      <div class="files-path">
+        <button class="fp-up" id="fpUp" title="${t('fUp')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+        <button class="fp-crumb${segs.length ? '' : ' last'}" id="fpHome">/</button>
+        ${crumbHtml}
+      </div>
+      <div class="files-actions">
+        <button class="fp-btn" id="fpRefresh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 3v6h-6"/></svg>${t('fRefresh')}</button>
+        <button class="fp-btn" id="fpNewFile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M13 2v7h7"/></svg>${t('fNewFile')}</button>
+        <button class="fp-btn" id="fpNewDir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><path d="M12 11v6M9 14h6"/></svg>${t('fNewDir')}</button>
+      </div>
+    </div>
+    <div class="files-head">
+      <span>${t('fhName')}</span><span>${t('fhSize')}</span><span>${t('fhMod')}</span><span>${t('fhPerm')}</span>
+    </div>
+    <div class="files-list" id="filesList"></div>
+    <div class="files-status">${t('fsStatus', { a: entries.length, b: s.fs, c: s.disk })}</div>`;
+
+  $('fpUp').onclick = () => { tab.fpath = tab.fpath === '/' ? '/' : tab.fpath.slice(0, tab.fpath.lastIndexOf('/')) || '/'; renderFiles(tab); };
+  $('fpHome').onclick = () => { tab.fpath = '/'; renderFiles(tab); };
+  view.querySelectorAll('.fp-crumb[data-i]').forEach(b => b.onclick = () => {
+    const idx = +b.dataset.i;
+    tab.fpath = '/' + segs.slice(0, idx + 1).join('/');
+    renderFiles(tab);
+  });
+  $('fpRefresh').onclick = () => { toast(t('tRefreshed', { n: tab.fpath })); renderFiles(tab); };
+  $('fpNewFile').onclick = () => startNewItem(tab, 'file');
+  $('fpNewDir').onclick = () => startNewItem(tab, 'dir');
+
+  const list = $('filesList');
+  list.addEventListener('contextmenu', e => {
+    e.preventDefault(); e.stopPropagation();
+    showCtx(e.clientX, e.clientY, [
+      { icon: IC.plus, label: t('ctxNewFile'), fn: () => startNewItem(tab, 'file') },
+      { icon: IC.folderPlus, label: t('ctxNewDir'), fn: () => startNewItem(tab, 'dir') },
+      { icon: IC.sep, label: '', sep: true },
+      { icon: IC.refresh, label: t('ctxRefresh'), fn: () => { toast(t('tRefreshed', { n: tab.fpath })); renderFiles(tab); } }
+    ]);
+  });
+
+  const mkRow = (name, ent) => {
+    const isDir = ent.k === 'd';
+    const r = el('div', 'frow' + (isDir ? ' is-dir' : ''));
+    r.innerHTML = `
+      <span class="col-name"><svg class="f-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${isDir
+        ? '<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>'
+        : '<path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M13 2v7h7"/>'}</svg><span class="f-name">${escapeHtml(name)}</span></span>
+      <span class="col-size">${isDir ? '—' : fmtSize(ent.sz)}</span>
+      <span class="col-md">${ent.md}</span>
+      <span class="col-pm">${ent.pm}</span>`;
+    r.addEventListener('dblclick', () => {
+      if (isDir) { tab.fpath = joinPath(tab.fpath, name); renderFiles(tab); }
+      else openEditor(tab, joinPath(tab.fpath, name), ent);
+    });
+    r.addEventListener('contextmenu', e => {
+      e.preventDefault(); e.stopPropagation();
+      const items = isDir ? [
+        { icon: IC.folderOpen, label: t('ctxOpen'), fn: () => { tab.fpath = joinPath(tab.fpath, name); renderFiles(tab); } },
+        { icon: IC.sep, label: '', sep: true },
+        { icon: IC.pencil, label: t('ctxRename'), fn: () => startRename(tab, name, ent) },
+        { icon: IC.trash, label: t('ctxDelete'), danger: true, fn: () => { delete node.c[name]; renderFiles(tab); toast(t('tDeleted', { n: name })); } }
+      ] : [
+        { icon: IC.edit, label: t('ctxEdit'), fn: () => openEditor(tab, joinPath(tab.fpath, name), ent) },
+        { icon: IC.download, label: t('ctxDownload'), fn: () => toast(t('tDownloading', { n: name })) },
+        { icon: IC.sep, label: '', sep: true },
+        { icon: IC.pencil, label: t('ctxRename'), fn: () => startRename(tab, name, ent) },
+        { icon: IC.trash, label: t('ctxDelete'), danger: true, fn: () => { delete node.c[name]; renderFiles(tab); toast(t('tDeleted', { n: name })); } }
+      ];
+      showCtx(e.clientX, e.clientY, items);
+    });
+    return r;
+  };
+
+  entries.forEach(([name, ent]) => list.appendChild(mkRow(name, ent)));
+  if (!entries.length) {
+    const e = el('div', 'files-empty');
+    e.dataset.odId = 'files-empty';
+    e.textContent = t('emptyDir');
+    list.appendChild(e);
+  }
+
+  if (tab.newItem) {
+    const isRename = tab.newItem.rename != null;
+    const kind = tab.newItem.kind;
+    const ir = el('div', 'frow new-row');
+    ir.innerHTML = `<span class="col-name"><svg class="f-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${kind === 'dir'
+        ? '<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>'
+        : '<path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M13 2v7h7"/>'}</svg><input id="newName" class="new-name" value="${escapeHtml(tab.newItem.rename || '')}" placeholder="${kind === 'dir' ? t('phDir') : t('phFile')}" aria-label="${kind === 'dir' ? t('phDir') : t('phFile')}"></span>
+      <span class="col-size"></span><span class="col-md"></span><span class="col-pm"></span>`;
+    list.insertBefore(ir, list.firstChild);
+    const inp = ir.querySelector('input');
+    inp.focus();
+    inp.select && inp.select();
+    const commit = () => {
+      const val = inp.value.trim();
+      if (!val) { tab.newItem = null; renderFiles(tab); return; }
+      const parent = resolve(tab.fs, tab.fpath);
+      if (isRename) { delete parent.c[tab.newItem.rename]; parent.c[val] = tab.newItem.ent; toast(t('tRenamed', { n: val })); }
+      else { parent.c[val] = kind === 'dir' ? D() : F(0, new Date().toISOString().slice(0, 16).replace('T', ' ')); toast(t(kind === 'dir' ? 'tCreatedDir' : 'tCreatedFile', { n: val })); }
+      tab.newItem = null; renderFiles(tab);
+    };
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Enter') commit();
+      if (e.key === 'Escape') { tab.newItem = null; renderFiles(tab); }
+    });
+  }
+}
+function startNewItem(tab, kind) { tab.newItem = { kind }; renderFiles(tab); }
+function startRename(tab, name, ent) { tab.newItem = { kind: ent.k === 'd' ? 'dir' : 'file', rename: name, ent }; renderFiles(tab); }
+
+/* ================= 進程管理 ================= */
+function procsOf(s) {
+  const u = s.user, isDb = s.id.includes('db'), hasGpu = s.id.includes('local') || s.id.includes('staging');
+  const procs = [
+    { name: 'systemd', pid: 1, user: 'root', cpu: 0.1, mem: 0.8, gpu: 0, exe: '/sbin/init', pm: 'rw-r--r--' },
+    { name: 'systemd-journald', pid: 324, user: 'root', cpu: 0.2, mem: 1.1, gpu: 0, exe: '/usr/lib/systemd/systemd-journald', pm: 'rw-r--r--' },
+    { name: 'sshd', pid: 847, user: 'root', cpu: 0.0, mem: 0.6, gpu: 0, exe: '/usr/sbin/sshd', pm: 'rw-r--r--' },
+    { name: isDb ? 'postgres' : 'nginx', pid: isDb ? 1211 : 1024, user: isDb ? 'postgres' : 'www-data', cpu: isDb ? 8.4 : 1.2, mem: isDb ? 22.7 : 3.1, gpu: 0, exe: isDb ? '/usr/lib/postgresql/16/bin/postgres' : 'nginx: master process', pm: 'rw-r--r--' },
+    { name: 'node', pid: 2210, user: u, cpu: 34.2, mem: 12.4, gpu: 0, exe: '/opt/node/bin/node /home/' + u + '/app/server.js', pm: 'rw-r--r--' },
+    { name: 'python3', pid: 1502, user: u, cpu: 2.4, mem: 3.6, gpu: 0, exe: '/usr/bin/python3 /home/' + u + '/scripts/worker.py', pm: 'rw-r--r--' },
+    { name: 'bash', pid: 2312, user: u, cpu: 0.0, mem: 0.9, gpu: 0, exe: '-bash', pm: 'rw-r--r--' },
+    { name: 'sshd: ' + u + '@pts/0', pid: 2389, user: u, cpu: 0.0, mem: 0.4, gpu: 0, exe: 'sshd: ' + u + '@pts/0', pm: 'rw-------' },
+    { name: 'dbus-daemon', pid: 486, user: 'messagebus', cpu: 0.0, mem: 0.3, gpu: 0, exe: '/usr/bin/dbus-daemon --system', pm: 'rw-r--r--' },
+    { name: 'cron', pid: 612, user: 'root', cpu: 0.0, mem: 0.2, gpu: 0, exe: '/usr/sbin/cron -f', pm: 'rw-r--r--' }
+  ];
+  if (hasGpu) procs.push({ name: 'ffmpeg', pid: 3041, user: u, cpu: 12.8, mem: 5.9, gpu: 18.5, exe: '/usr/bin/ffmpeg -re -i stream.flv', pm: 'rw-r--r--' });
+  return procs;
+}
+
+function openProc(id) { openTab(id, 'proc'); }
+
+function renderProc(tab) {
+  const view = $('procView');
+  const s = srv(tab.serverId);
+  if (!tab.procs) tab.procs = procsOf(s);
+  const PCOL = { name: t('pcName'), pid: 'PID', user: t('pcUser'), cpu: 'CPU %', mem: t('pcMem'), gpu: t('pcGpu'), exe: t('pcExe'), pm: t('pcPm') };
+  let rows = tab.procs.filter(p => !tab.psearch || p.name.toLowerCase().includes(tab.psearch) || String(p.pid).includes(tab.psearch));
+  const d = tab.psort.asc ? 1 : -1;
+  rows = [...rows].sort((a, b) => {
+    if (tab.psort.key === 'name') return a.name.localeCompare(b.name) * d;
+    return (a[tab.psort.key] - b[tab.psort.key]) * d;
+  });
+  const heat = v => v > 60 ? ' hot2' : v > 25 ? ' hot' : '';
+  view.innerHTML = `
+    <div class="proc-tool">
+      <span class="pt-title">${t('ptTitle')}</span>
+      <span class="pt-count">${rows.length} / ${tab.procs.length}</span>
+      <div class="proc-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input id="procSearch" placeholder="${t('ptSearch')}" aria-label="${t('ptSearch')}" autocomplete="off">
+      </div>
+      <button class="fp-btn" id="procRefresh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 3v6h-6"/></svg>${t('fRefresh')}</button>
+    </div>
+    <div class="proc-wrap">
+      <table class="proc-table">
+        <thead><tr>
+          ${Object.keys(PCOL).map(k => `<th data-key="${k}" class="${tab.psort.key === k ? 'sorted' : ''}">${PCOL[k]}${tab.psort.key === k ? (tab.psort.asc ? ' ↑' : ' ↓') : ''}</th>`).join('')}
+          <th></th>
+        </tr></thead>
+        <tbody>${rows.length ? rows.map(p => `
+          <tr>
+            <td><span class="proc-name"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg>${escapeHtml(p.name)}</span></td>
+            <td class="pnum">${p.pid}</td>
+            <td class="pnum">${escapeHtml(p.user)}</td>
+            <td><span class="pcpu${heat(p.cpu)}"><span class="mini"><i style="width:${Math.min(100, p.cpu)}%"></i></span><span class="pnum">${p.cpu.toFixed(1)}%</span></span></td>
+            <td class="pnum">${p.mem.toFixed(1)}%</td>
+            <td class="pnum">${p.gpu ? p.gpu.toFixed(1) + '%' : '—'}</td>
+            <td class="p-exe" title="${escapeHtml(p.exe)}">${escapeHtml(p.exe)}</td>
+            <td class="pnum">${p.pm}</td>
+            <td><button class="btn-kill" data-pid="${p.pid}">${t('ptKill')}</button></td>
+          </tr>`).join('') : `<tr><td colspan="9" class="proc-empty">${t('noProcs')}</td></tr>`}
+        </tbody>
+      </table>
+    </div>`;
+  view.querySelectorAll('th').forEach(th => th.onclick = () => {
+    const k = th.dataset.key; if (!k) return;
+    if (tab.psort.key === k) tab.psort.asc = !tab.psort.asc; else tab.psort = { key: k, asc: false };
+    renderProc(tab);
+  });
+  view.querySelectorAll('.btn-kill').forEach(b => b.onclick = () => {
+    const pid = +b.dataset.pid, p = tab.procs.find(x => x.pid === pid);
+    tab.procs = tab.procs.filter(x => x.pid !== pid);
+    renderProc(tab);
+    toast(t('tTerminated', { n: p.name, p: pid }));
+  });
+  $('procSearch').value = tab.psearch || '';
+  $('procSearch').addEventListener('input', e => { tab.psearch = e.target.value.trim().toLowerCase(); renderProc(tab); });
+  $('procRefresh').onclick = () => { tab.procs = procsOf(s); renderProc(tab); toast(t('tRefreshProcs', { n: s.name })); };
+}
+
+/* ================= 右鍵選單 ================= */
+const IC = {
+  plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+  folderPlus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><path d="M12 11v6M9 14h6"/></svg>',
+  refresh: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 3v6h-6"/></svg>',
+  folderOpen: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>',
+  edit: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.83 2.83 0 0 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg>',
+  pencil: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>',
+  download: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>',
+  trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>',
+  sep: ''
+};
+const CTX = $('ctxMenu');
+let ctxItems = [];
+function showCtx(x, y, items) {
+  ctxItems = items;
+  CTX.innerHTML = items.map((it, i) => it.sep ? '<div class="ctx-sep"></div>' : `<button class="ctx-item${it.danger ? ' danger' : ''}" data-i="${i}">${it.icon}<span>${it.label}</span></button>`).join('');
+  CTX.style.display = 'block';
+  CTX.querySelectorAll('.ctx-item').forEach(b => b.onclick = () => { ctxItems[+b.dataset.i].fn(); closeCtx(); });
+  const r = CTX.getBoundingClientRect();
+  CTX.style.left = Math.min(x, window.innerWidth - r.width - 8) + 'px';
+  CTX.style.top = Math.min(y, window.innerHeight - r.height - 8) + 'px';
+}
+function closeCtx() { CTX.style.display = 'none'; ctxItems = []; }
+document.addEventListener('click', () => closeCtx());
+document.addEventListener('contextmenu', e => { if (!e.target.closest('#ctxMenu')) closeCtx(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeCtx(); setThemePop(false); } });
+
+/* ================= 檔案編輯 modal ================= */
+let editing = null;
+function contentFor(ent, name) {
+  if (ent.ct != null) return ent.ct;
+  const ext = name.split('.').pop().toLowerCase();
+  return ext === 'log' ? `${t('ctLogPreview')}\n[2026-08-03 09:14:02] INFO  health-check ok\n[2026-08-03 09:14:11] INFO  request GET / 200 12ms\n`
+    : `# ${name}\n${t('ctSampleNote')}\n`;
+}
+function openEditor(tab, path, ent) {
+  editing = { tab, path, ent };
+  $('editTitle').textContent = path.split('/').pop();
+  $('editPath').textContent = `${srv(tab.serverId).name} : ${path}`;
+  $('editPerm').textContent = ent.pm;
+  $('editArea').value = contentFor(ent, path);
+  const lines = $('editArea').value.split('\n').length;
+  $('editMeta').textContent = t('editMeta', { n: lines, s: fmtSize(ent.sz) });
+  $('editModal').classList.add('show');
+  setTimeout(() => $('editArea').focus(), 60);
+}
+$('editCancel').onclick = () => $('editModal').classList.remove('show');
+$('editModal').addEventListener('click', e => { if (e.target.id === 'editModal') $('editModal').classList.remove('show'); });
+$('editSave').onclick = () => {
+  if (!editing) return;
+  const node = resolve(editing.tab.fs, editing.path);
+  if (node) node.ct = $('editArea').value;
+  const lines = $('editArea').value.split('\n').length;
+  $('editMeta').textContent = t('editSaved', { n: lines });
+  toast(t('tSaved', { n: editing.path.split('/').pop() }));
+};
+
+/* ================= 新增伺服器 modal ================= */
+let addProto = 'SSH', addAuth = '密碼';
+function openAddModal() {
+  populateGroupSelect();
+  $('afName').value = ''; $('afHost').value = ''; $('afPort').value = '22'; $('afUser').value = 'root'; $('afPass').value = '';
+  $('addModal').classList.add('show');
+  setTimeout(() => $('afName').focus(), 60);
+}
+$('afCancel').onclick = () => $('addModal').classList.remove('show');
+$('addModal').addEventListener('click', e => { if (e.target.id === 'addModal') $('addModal').classList.remove('show'); });
+document.querySelectorAll('#addModal .seg-btn[data-proto]').forEach(b => b.onclick = () => {
+  addProto = b.dataset.proto;
+  document.querySelectorAll('#addModal .seg-btn[data-proto]').forEach(x => x.classList.toggle('active', x === b));
+});
+document.querySelectorAll('#addModal .seg-btn[data-auth]').forEach(b => b.onclick = () => {
+  addAuth = b.dataset.auth;
+  document.querySelectorAll('#addModal .seg-btn[data-auth]').forEach(x => x.classList.toggle('active', x === b));
+});
+$('afSave').onclick = () => {
+  const name = $('afName').value.trim(), host = $('afHost').value.trim(), user = $('afUser').value.trim();
+  if (!name || !host || !user) { toast(t('tFillRequired')); return; }
+  const port = parseInt($('afPort').value || '22', 10);
+  const id = name.toLowerCase().replace(/[^a-z0-9-]/g, '-') || ('srv-' + Date.now());
+  const group = $('afGroup').value;
+  const now = new Date().toISOString().slice(0, 16).replace('T', ' ');
+  SERVERS.push({
+    id, name, group, ip: host, port, proto: addProto, user, os: 'Ubuntu 22.04', kernel: '6.5.0-45-generic', ver: '22.04.4 LTS',
+    status: 'online', lat: Math.round(10 + Math.random() * 70), fav: false, cpu: 9, mem: 31, disk: 38, uptime: '1 min',
+    load: '0.12, 0.10, 0.08', lastLogin: now, srcIp: '203.0.113.1', rx: 0.02, tx: 0.01, enc: 'aes256-gcm@openssh.com', fp: 'SHA256:••••••••', fs: 'ext4 / 40GB'
+  });
+  renderSidebar($('searchInput').value.trim().toLowerCase());
+  $('addModal').classList.remove('show');
+  openTab(id, 'term');
+  toast(t('tCreatedConn', { n: name }));
+};
+
+/* ================= inspector ================= */
+function renderInspector() {
+  const body = $('inspectorBody');
+  if (!tabs.length || activeTab < 0) { body.innerHTML = `<div style="padding:14px;color:var(--muted);font-size:12.5px">${t('insEmpty')}</div>`; return; }
+  const s = srv(tabs[activeTab].serverId);
+  const online = s.status === 'online';
+  body.innerHTML = `
+    <div class="ins-head">
+      <div class="ins-title">
+        <div class="ins-avatar">${s.name.slice(0,2).toUpperCase()}</div>
+        <div>
+          <div class="ins-name">${s.name}</div>
+          <div class="ins-ip">${s.ip}:${s.port}</div>
+        </div>
+      </div>
+      <div class="ins-status-row">
+        <span class="status-pill"><span class="dot ${s.status}"></span>${online ? t('stConnected') : t('offline')}</span>
+        ${s.lat != null ? `<span class="lat">${s.lat} ms</span>` : ''}
+        <span class="pill pill-proto">${s.proto}</span>
+      </div>
+      <div class="ins-actions">
+        <button class="btn-ghost" id="insReconnect"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 3v6h-6"/></svg>${t('insReconnect')}</button>
+        <button class="btn-ghost" id="insSftp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V4M8 16l4-4-4-4M12 16l4-4-4-4"/></svg>${t('insSftp')}</button>
+        <button class="btn-ghost" id="insProc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg>${t('insProc')}</button>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title">${t('insLoad')} <span class="val">${t('insUptime', { n: s.uptime })}</span></div>
+      <div class="meter">
+        <div class="meter-row"><span class="k">${t('insCpu')}</span><span class="v" id="mCpu">${s.cpu}%</span></div>
+        <div class="bar cpu"><i id="bCpu" style="width:${s.cpu}%"></i></div>
+      </div>
+      <div class="meter">
+        <div class="meter-row"><span class="k">${t('insMem')}</span><span class="v" id="mMem">${s.mem}%</span></div>
+        <div class="bar mem"><i id="bMem" style="width:${s.mem}%"></i></div>
+      </div>
+      <div class="meter">
+        <div class="meter-row"><span class="k">${t('insDisk')}</span><span class="v" id="mDisk">${s.disk}%</span></div>
+        <div class="bar disk ${s.disk > 75 ? 'high' : ''}"><i style="width:${s.disk}%"></i></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title">${t('insNet')}</div>
+      <div class="spark" id="sparkRx"></div>
+      <div class="meter-row" style="font-size:12px"><span class="k">${t('insRx')}</span><span class="v" id="vRx">${fmtRate(s.rx)}</span></div>
+      <div class="meter-row" style="font-size:12px"><span class="k">${t('insTx')}</span><span class="v" id="vTx">${fmtRate(s.tx)}</span></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title">${t('insConn')}</div>
+      <div class="kv">
+        <div class="kv-row"><span class="k">${t('insHost')}</span><span class="v">${s.ip}</span></div>
+        <div class="kv-row"><span class="k">${t('insUser')}</span><span class="v">${s.user}</span></div>
+        <div class="kv-row"><span class="k">${t('insPort')}</span><span class="v">${s.port}</span></div>
+        <div class="kv-row"><span class="k">${t('insProto')}</span><span class="v">${s.proto}</span></div>
+        <div class="kv-row"><span class="k">${t('insEnc')}</span><span class="v">${s.enc}</span></div>
+        <div class="kv-row"><span class="k">${t('insFp')}</span><span class="v">${s.fp}</span></div>
+        <div class="kv-row"><span class="k">${t('insFs')}</span><span class="v">${s.fs}</span></div>
+      </div>
+    </div>`;
+  $('insReconnect').onclick = () => { toast(t('tReconnecting', { n: s.name })); setTimeout(() => toast(t('tReconnected', { n: s.name })), 900); };
+  $('insSftp').onclick = () => openFiles(s.id);
+  $('insProc').onclick = () => openProc(s.id);
+  initSpark();
+}
+function initSpark() {
+  const s = srv(tabs[activeTab].serverId);
+  const box = $('sparkRx');
+  if (!box) return;
+  box.innerHTML = '';
+  const pts = live[s.id] ? live[s.id].spark : Array.from({length:20}, (_,i) => 20 + Math.round(30 * Math.abs(Math.sin(i/3))));
+  pts.forEach(p => box.appendChild(el('i', '', `style="height:${Math.max(6, Math.min(100, p))}%"`)));
+}
+
+function updateTitle() {
+  const s = tabs[activeTab] && srv(tabs[activeTab].serverId);
+  const on = !!s && s.status === 'online';
+  $('tbServer').textContent = s ? s.name : t('stOffline');
+  $('sbServer').textContent = s ? s.name : '—';
+  $('sbPing').textContent = s && s.lat != null ? s.lat + ' ms' : t('offlineTag');
+  $('sbState').textContent = on ? t('stConnected') : t('stOffline');
+  $('sbState').style.color = on ? 'var(--success)' : 'var(--muted)';
+  $('sbDot').className = 'dot ' + (s ? s.status : 'offline');
+}
+
+/* ================= live tick ================= */
+function tick() {
+  const now = new Date();
+  $('sbClock').textContent = now.toTimeString().slice(0,8);
+  tabs.forEach(t => {
+    const s = srv(t.serverId);
+    if (s.status !== 'online') return;
+    if (!live[s.id]) live[s.id] = { rx: s.rx, tx: s.tx, cpu: s.cpu, spark: [] };
+    const L = live[s.id];
+    L.rx = Math.max(0.01, L.rx + (Math.random() - 0.48) * 0.14);
+    L.tx = Math.max(0.01, L.tx + (Math.random() - 0.48) * 0.03);
+    L.cpu = Math.max(3, Math.min(96, L.cpu + (Math.random() - 0.5) * 5));
+    L.spark.push(15 + L.cpu * 0.8);
+    if (L.spark.length > 20) L.spark.shift();
+  });
+  if (tabs[activeTab]) {
+    const s = srv(tabs[activeTab].serverId), L = live[s.id];
+    if (L) {
+      $('sbRx').textContent = fmtRate(L.rx);
+      $('sbTx').textContent = fmtRate(L.tx);
+      const mCpu = $('mCpu'); if (mCpu) { mCpu.textContent = Math.round(L.cpu) + '%'; $('bCpu').style.width = L.cpu + '%'; }
+      const mMem = $('mMem'); if (mMem && s.status === 'online') { mMem.textContent = Math.round(s.mem + Math.sin(Date.now()/6000)*1.5) + '%'; $('bMem').style.width = Math.min(100, s.mem + Math.sin(Date.now()/6000)*1.5) + '%'; }
+      const vRx = $('vRx'); if (vRx) vRx.textContent = fmtRate(L.rx);
+      const vTx = $('vTx'); if (vTx) vTx.textContent = fmtRate(L.tx);
+      initSpark();
+    }
+  }
+}
+
+/* ================= window chrome ================= */
+let minimized = false;
+function toast(msg) {
+  const t = el('div', 'toast', escapeHtml(msg));
+  $('toasts').appendChild(t);
+  setTimeout(() => { t.classList.add('out'); setTimeout(() => t.remove(), 320); }, 1800);
+}
+$('btnMin').onclick = () => {
+  minimized = true;
+  $('appWindow').classList.add('minimized');
+  $('minbar').classList.add('show');
+};
+$('minbarRestore').onclick = () => {
+  minimized = false;
+  $('appWindow').classList.remove('minimized');
+  $('minbar').classList.remove('show');
+};
+$('btnClose').onclick = () => $('closeModal').classList.add('show');
+$('closeModal').addEventListener('click', e => {
+  const a = e.target.dataset ? e.target.dataset.act : null;
+  if (a === 'cancel' || !e.target.closest('.modal')) $('closeModal').classList.remove('show');
+  if (a === 'confirm') {
+    $('closeModal').classList.remove('show');
+    $('appWindow').classList.add('disconnected');
+    $('discHost').textContent = tabs[activeTab] ? srv(tabs[activeTab].serverId).name : '—';
+  }
+});
+$('btnReconnect').onclick = () => {
+  $('appWindow').classList.remove('disconnected');
+  toast(t('tRestored'));
+};
+
+/* ================= misc ================= */
+function togglePanel() {
+  panelOpen = !panelOpen;
+  if (window.innerWidth > 980) {
+    $('inspector').style.display = panelOpen ? '' : 'none';
+    document.querySelector('.main').style.gridTemplateColumns = panelOpen ? '236px 1fr 276px' : '236px 1fr';
+  } else {
+    $('inspector').classList.toggle('open', panelOpen);
+  }
+  $('btnTogglePanel').classList.toggle('active', panelOpen);
+}
+$('btnTogglePanel').onclick = togglePanel;
+$('langBtn').onclick = () => { LANG = LANG === 'en' ? 'zh-TW' : 'en'; applyLang(); };
+$('btnSettings').onclick = () => toast(t('tSettings'));
+$('btnAddServer').onclick = openAddModal;
+$('btnNewServer').onclick = openAddModal;
+$('btnEmptyConnect').onclick = openAddModal;
+$('btnEmptyDemo').onclick = () => {
+  const first = SERVERS.find(s => s.status === 'online');
+  if (first) openTab(first.id, 'term'); else toast(t('tNoDemo'));
+};
+$('btnFilesTool').onclick = () => { if (tabs[activeTab]) openFiles(tabs[activeTab].serverId); else toast(t('tConnectFirst')); };
+$('btnProcTool').onclick = () => { if (tabs[activeTab]) openProc(tabs[activeTab].serverId); else toast(t('tConnectFirst')); };
+
+$('searchInput').addEventListener('input', e => renderSidebar(e.target.value.trim().toLowerCase()));
+
+/* keyboard */
+document.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 't') { e.preventDefault(); newTab(); }
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'w') { e.preventDefault(); closeTab(activeTab); }
+});
+
+/* ================= sidebar folders ================= */
+function populateGroupSelect() {
+  const sel = $('afGroup');
+  if (!sel) return;
+  sel.innerHTML = GROUPS.filter(g => g !== '常用伺服器').map(g => `<option value="${g}">${tGroup(g)}</option>`).join('');
+}
+function startNewGroup() { sidebarEdit = { mode: 'new' }; renderSidebar($('searchInput').value.trim().toLowerCase()); }
+function startRenameGroup(name) { sidebarEdit = { mode: 'rename', name }; renderSidebar($('searchInput').value.trim().toLowerCase()); }
+function deleteGroupAction(name) {
+  const n = SERVERS.filter(s => s.group === name).length;
+  deleteGroup(name);
+  renderSidebar($('searchInput').value.trim().toLowerCase());
+  populateGroupSelect();
+  toast(n ? `${t('tGroupDeleted', { n: name })} · ${t('groupMoved')}` : t('tGroupDeleted', { n: name }));
+}
+$('groupList').addEventListener('contextmenu', e => {
+  e.preventDefault(); e.stopPropagation();
+  const gh = e.target.closest('.group-h');
+  if (gh) {
+    const name = gh.dataset.group;
+    if (GROUPS_DEFAULT.includes(name)) {
+      showCtx(e.clientX, e.clientY, [
+        { icon: IC.folderPlus, label: t('ctxNewGroup'), fn: startNewGroup }
+      ]);
+      return;
+    }
+    showCtx(e.clientX, e.clientY, [
+      { icon: IC.folderPlus, label: t('ctxNewGroup'), fn: startNewGroup },
+      { icon: IC.sep, label: '', sep: true },
+      { icon: IC.pencil, label: t('ctxRenameGroup'), fn: () => startRenameGroup(name) },
+      { icon: IC.trash, label: t('ctxDeleteGroup'), danger: true, fn: () => deleteGroupAction(name) }
+    ]);
+    return;
+  }
+  if (e.target.closest('.srv') || e.target.closest('.group-input')) return;
+  showCtx(e.clientX, e.clientY, [
+    { icon: IC.folderPlus, label: t('ctxNewGroup'), fn: startNewGroup }
+  ]);
+});
+
+/* ================= themes ================= */
+const THEME_KEY = 'ssh-wb-theme-demo';
+const THEMES = ['midnight', 'ember', 'paper', 'sand'];
+let THEME = 'midnight';
+try { const saved = localStorage.getItem(THEME_KEY); if (THEMES.includes(saved)) THEME = saved; } catch (e) { /* ignore */ }
+function applyTheme() {
+  document.documentElement.dataset.theme = THEME;
+  try { localStorage.setItem(THEME_KEY, THEME); } catch (e) { /* ignore */ }
+  renderThemePop();
+}
+function themeI18nKey(id) { return 'th' + id[0].toUpperCase() + id.slice(1); }
+function renderThemePop() {
+  const pop = $('themePop'); if (!pop) return;
+  pop.innerHTML = `
+    <div class="tp-head"><span>${t('thLabel')}</span></div>
+    ${THEMES.map(id => `
+      <button class="tp-item${THEME === id ? ' active' : ''}" data-theme="${id}" role="menuitemradio" aria-checked="${THEME === id}">
+        <span class="tp-swatch s-${id}"></span>
+        <span class="tp-name">${t(themeI18nKey(id))}</span>
+        <span class="tp-tag">${t(id === 'midnight' || id === 'ember' ? 'thDark' : 'thLight')}</span>
+        <svg class="tp-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+      </button>`).join('')}`;
+  pop.querySelectorAll('.tp-item').forEach(b => b.onclick = () => {
+    THEME = b.dataset.theme; applyTheme(); setThemePop(false);
+  });
+}
+function setThemePop(open) {
+  $('themePop').classList.toggle('open', open);
+  $('btnTheme').classList.toggle('open', open);
+  $('btnTheme').setAttribute('aria-expanded', String(open));
+}
+$('btnTheme').onclick = e => {
+  e.stopPropagation();
+  const pop = $('themePop');
+  const open = !pop.classList.contains('open');
+  setThemePop(open);
+  if (open) {
+    const r = $('btnTheme').getBoundingClientRect();
+    pop.style.left = Math.max(8, Math.min(r.right - 196, window.innerWidth - 204)) + 'px';
+    pop.style.top = (r.bottom + 8) + 'px';
+  }
+};
+document.addEventListener('click', e => {
+  if (!e.target.closest('#themePop') && !e.target.closest('#btnTheme')) setThemePop(false);
+});
+
+/* ================= boot ================= */
+applyStatic();
+applyTheme();
+renderSidebar('');
+openTab('prod-app-01');
+renderInspector();
+interval = setInterval(tick, 1500);
+tick();
+</script>
+</body>
+</html>
