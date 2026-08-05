@@ -7,6 +7,8 @@ import (
 	"time"
 
 	"wails3-app/model"
+
+	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
 type LocalStorageService struct {
@@ -17,7 +19,7 @@ func NewLocalStorageService() *LocalStorageService {
 	return &LocalStorageService{}
 }
 
-func (s *LocalStorageService) ServiceStartup(ctx context.Context) error {
+func (s *LocalStorageService) ServiceStartup(ctx context.Context, options application.ServiceOptions) error {
 	dir, err := dataDir()
 	if err != nil {
 		return err
@@ -30,7 +32,7 @@ func (s *LocalStorageService) ServiceStartup(ctx context.Context) error {
 	return nil
 }
 
-func (s *LocalStorageService) ServiceShutdown(ctx context.Context) error {
+func (s *LocalStorageService) ServiceShutdown() error {
 	return s.close()
 }
 
